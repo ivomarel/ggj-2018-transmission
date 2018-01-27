@@ -11,6 +11,8 @@ public class PlayerController : Singleton<PlayerController>
 	/// The speed increase when fully pushing the controller
 	/// </summary>
 
+	public static int playerCount = 1;
+
 	[Header ("Gears")]
 	public PlayerIndex gearPlayerIndex;
 	public Text transmissionPlayerFeedback;
