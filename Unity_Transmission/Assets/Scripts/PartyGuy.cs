@@ -5,38 +5,51 @@ using UnityEngine.AI;
 using Pathfinding;
 using Pathfinding.Examples;
 
-public class PartyGuy : MonoBehaviour {
+public class PartyGuy : MonoBehaviour
+{
 
+
+	public float hitVelocityToDie;
+	public float speed;
+	public float rotationSpeed;
 	public float stoppingDistance;
 	public Blood bloodPrefab;
-	RVOExampleAgent agent;
 
-	float s;
+	float realSpeed;
 
+	private Rigidbody rb;
 	// Use this for initialization
-	void Start () {
-		agent = GetComponent<RVOExampleAgent> ();
-		s = agent.maxSpeed;
+	void Start ()
+	{
+		rb = GetComponent<Rigidbody> ();	
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		agent.SetTarget(PlayerController.instance.transform.position);
+	void Update ()
+	{
+		Vector3 dirToPlayer = PlayerController.instance.transform.position - transform.position;
+		dirToPlayer.y = 0;
 
-		float d = Vector3.Distance (transform.position, PlayerController.instance.transform.position);
-		if (d < stoppingDistance) {
-			agent.maxSpeed = 0;
-		} else if (d > stoppingDistance * 1.1f){
-			agent.maxSpeed = s;
+		float d = dirToPlayer.sqrMagnitude;
+		if (d < stoppingDistance * stoppingDistance) {
+			realSpeed = 0;
+		} else if (d > stoppingDistance * stoppingDistance * 1.1f) {
+			realSpeed = speed;
 		}
+
+		rb.velocity = realSpeed * dirToPlayer.normalized;
+		transform.rotation = (Quaternion.RotateTowards (transform.rotation, Quaternion.LookRotation (dirToPlayer), rotationSpeed)); 
 	}
 
-	void OnCollisionEnter (Collision collisionInfo ) {
-		PlayerController player = collisionInfo.collider.GetComponent<PlayerController> ();
-		if (player) {
-		//	Instantiate (bloodPrefab, transform.position, transform.rotation);
+	void OnCollisionEnter (Collision collisionInfo)
+	{
+		if (collisionInfo.collider.GetComponent<PartyGuy> ()) {
+			return;
+		}
+		if (collisionInfo.relativeVelocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
+			Instantiate (bloodPrefab, transform.position, transform.rotation);
 
-		//	Destroy (gameObject);
+			Destroy (gameObject);
 		}
 	}
 }
