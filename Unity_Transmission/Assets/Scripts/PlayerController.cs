@@ -17,6 +17,11 @@ public class PlayerController : Singleton<PlayerController> {
 
 	Gear currentGear {
 		get {
+			if (currentGearIndex == -1) {
+				return new Gear () {
+					isNeutral = true
+				};
+			}
 			return gears [currentGearIndex];
 		}
 	}
@@ -86,13 +91,15 @@ public class PlayerController : Singleton<PlayerController> {
 
 		currentSpeed *= (1-speedAutoDecrease * Time.deltaTime);
 
-        //Only adding gas when 
-		if (currentGearIndex == 0) {
-			currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
-		} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed){
-			currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+		if (!currentGear.isNeutral) {
+			//Only adding gas when not neutral
+			//0 is reverse
+			if (currentGearIndex == 0) {
+				currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
+			} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed) {
+				currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+			}
 		}
-
 		//currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, currentGear.maxSpeed);
 
 		//Actually applying to the RB
@@ -122,8 +129,8 @@ public class PlayerController : Singleton<PlayerController> {
 
 [System.Serializable]
 public struct Gear  {
-
 	public float minSpeed;
 	public float maxSpeed;
 	public float speedIncrease;
+	internal bool isNeutral;
 }
