@@ -50,8 +50,6 @@ public class TransmissionUI : MonoBehaviour {
 		knob.localPosition = Vector3.Scale(new Vector3 (input.X, input.Y), gearBoxSize);
 		PlayerController.instance.updateGear(-1);
 		currentGearArea = -1;
-
-		GamePad.SetVibration(PlayerController.instance.gearPlayerIndex, 0f, 0f);
 	}
 
 	void lockedGearHandler(GamePadThumbSticks.StickValue input) {
@@ -68,8 +66,6 @@ public class TransmissionUI : MonoBehaviour {
 
 		float clampedAngle = Mathf.Clamp(inputAngle(input) + 2*Mathf.PI, minGearAreaAngle + 2*Mathf.PI, maxGearAreaAngle + 2*Mathf.PI);
 
-		setTransmissionRumble(inputAngle(input) + 2 * Mathf.PI, minGearAreaAngle + 2 * Mathf.PI, maxGearAreaAngle + 2 * Mathf.PI);
-
 		knob.localPosition = Vector3.Scale(
 			new Vector3 (
 				Mathf.Cos(clampedAngle) * inputStrength(input),
@@ -85,30 +81,6 @@ public class TransmissionUI : MonoBehaviour {
 			}
 			PlayerController.instance.updateGear(currentGearArea);
 		}
-	}
-
-	void setTransmissionRumble(float angle, float min, float max) {
-		float powerX = 0f;
-		float powerY = 0f;
-		if (angle < min) {
-			powerY = min - angle * 0.2f;
-		}
-		if (angle > max) {
-			powerX = angle - max * 0.2f;
-		}
-
-		// We match the gearbox display
-		if ((angle % 2 * Mathf.PI - Mathf.PI) < 0) {
-			float tmp = powerX;
-			powerX = powerY;
-			powerY = tmp;
-		}
-
-		GamePad.SetVibration(
-			PlayerController.instance.gearPlayerIndex,
-			powerX,
-			powerY
-		);
 	}
 
 	void SelectGear() {
