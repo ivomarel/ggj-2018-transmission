@@ -4,11 +4,13 @@ using UnityEngine;
 using XInputDotNetPure;
 using UnityEngine.UI;
 
+
 public class PlayerController : Singleton<PlayerController> {
 
    	/// <summary>
     /// The speed increase when fully pushing the controller
-    /// </summary>
+	/// </summary>
+	public static int playerCount = 1;
 
 	[Header("Gears")]
 	public PlayerIndex gearPlayerIndex;
