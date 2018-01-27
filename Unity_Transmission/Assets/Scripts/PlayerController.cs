@@ -17,6 +17,11 @@ public class PlayerController : Singleton<PlayerController> {
 
 	Gear currentGear {
 		get {
+			if (currentGearIndex == -1) {
+				return new Gear () {
+					isNeutral = true
+				};
+			}
 			return gears [currentGearIndex];
 		}
 	}
@@ -40,6 +45,15 @@ public class PlayerController : Singleton<PlayerController> {
 
     internal float currentSteerRotation;
 
+	[Header("Transmission")]
+	public PlayerIndex transmissionIndex;
+	[Range(0,1)]
+	public float acceptedGearThreshold = 0.8f;
+	[Range(0,1)]
+	public float freeGearThreshold = 0.4f;
+	[Range(0,1)]
+	public float gearRestrictedRoamingProportion = 0.15f;
+
     //Components
     Rigidbody rb;
 
@@ -60,28 +74,11 @@ public class PlayerController : Singleton<PlayerController> {
 
         Speeding();
         Steering();
-		TempGearing ();
 
 	}
 
-	void TempGearing () {
-		GamePadState state = Xbox.GetState (speedPlayerIndex);
-		GamePadState prevState = Xbox.GetPrevState (speedPlayerIndex);
-
-		if (state.Buttons.Y == ButtonState.Pressed && prevState.Buttons.Y == ButtonState.Released) {
-			if (currentGearIndex < gears.Length - 1) {
-				currentGearIndex++;
-			}
-		}
-
-		if (state.Buttons.A == ButtonState.Pressed && prevState.Buttons.A == ButtonState.Released) {
-			
-			if (currentGearIndex > 0) {
-				currentGearIndex--;
-			}
-		}
-
-
+	public void updateGear(int gear) {
+		currentGearIndex = gear;
 	}
 
     void Speeding () {
@@ -94,13 +91,15 @@ public class PlayerController : Singleton<PlayerController> {
 
 		currentSpeed *= (1-speedAutoDecrease * Time.deltaTime);
 
-        //Only adding gas when 
-		if (currentGearIndex == 0) {
-			currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
-		} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed){
-			currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+		if (!currentGear.isNeutral) {
+			//Only adding gas when not neutral
+			//0 is reverse
+			if (currentGearIndex == 0) {
+				currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
+			} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed) {
+				currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+			}
 		}
-
 		//currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, currentGear.maxSpeed);
 
 		//Actually applying to the RB
@@ -130,8 +129,8 @@ public class PlayerController : Singleton<PlayerController> {
 
 [System.Serializable]
 public struct Gear  {
-
 	public float minSpeed;
 	public float maxSpeed;
 	public float speedIncrease;
+	internal bool isNeutral;
 }
