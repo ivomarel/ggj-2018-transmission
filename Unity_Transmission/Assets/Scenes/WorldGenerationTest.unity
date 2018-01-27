@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c32b49f4e68614d94ac5ed381f2c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildDelay: 0.1
+  buildDelay: 0
   nRooms: 500
   realRoomSize: 3.5
   rooms:
