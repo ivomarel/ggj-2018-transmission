@@ -5,24 +5,37 @@ using XInputDotNetPure;
 
 public class PlayerController : Singleton<PlayerController> {
 
-    /// <summary>
+   	/// <summary>
     /// The speed increase when fully pushing the controller
     /// </summary>
 
+	[Header("Gears")]
+	public PlayerIndex gearPlayerIndex;
+	public Gear[] gears;
+
+	internal int currentGearIndex;
+
+	Gear currentGear {
+		get {
+			return gears [currentGearIndex];
+		}
+	}
+
 	//public AnimationCurve speedUpCurve;
 	[Header("Speeding")]
-	public PlayerIndex speedIndex;
+	public PlayerIndex speedPlayerIndex;
     public float speedIncrease;
     public float speedAutoDecrease;
     public float speedBreakDecrease;
     public float maxBackwardsSpeed;
-    public float maxSpeed;
+   // public float maxSpeed;
 
     internal float currentSpeed;
 
     [Header("Steering")]
-	public PlayerIndex steeringIndex;
+	public PlayerIndex steerPlayerIndex;
 	public float steeringSpeed;
+	public float steerAutoDecrease;
 	public float maxSteer;
 
     internal float currentSteerRotation;
@@ -30,40 +43,65 @@ public class PlayerController : Singleton<PlayerController> {
     //Components
     Rigidbody rb;
 
+	ButtonState prevState;
+
     float horizontalInput;
     float verticalInput;
 
     // Use this for initialization
     void Start () {
+		
         rb = GetComponent<Rigidbody>();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-       // horizontalInput  = Input.GetAxis("Horizontal");
-       // verticalInput = Input.GetAxis("Vertical");
 
         Speeding();
         Steering();
+		TempGearing ();
+
+	}
+
+	void TempGearing () {
+		GamePadState state = Xbox.GetState (speedPlayerIndex);
+		GamePadState prevState = Xbox.GetPrevState (speedPlayerIndex);
+
+		if (state.Buttons.Y == ButtonState.Pressed && prevState.Buttons.Y == ButtonState.Released) {
+			if (currentGearIndex < gears.Length - 1) {
+				currentGearIndex++;
+			}
+		}
+
+		if (state.Buttons.A == ButtonState.Pressed && prevState.Buttons.A == ButtonState.Released) {
+			
+			if (currentGearIndex > 0) {
+				currentGearIndex--;
+			}
+		}
+
+
 	}
 
     void Speeding () {
-		GamePadState state = GamePad.GetState (speedIndex);
+		GamePadState state = GamePad.GetState (speedPlayerIndex);
 
-		verticalInput = state.ThumbSticks.Left.Y;
+		verticalInput = state.Triggers.Right;
+	//	verticalInput = Mathf.Max (0, verticalInput);
 
 		currentSpeed = transform.InverseTransformVector(rb.velocity).z;
 
-       // currentSpeed -= speedAutoDecrease * Time.deltaTime;
+		currentSpeed *= (1-speedAutoDecrease * Time.deltaTime);
 
-        //When pressing forward, add gas
-       // if (verticalInput > 0)
-        
-        currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
-        
+        //Only adding gas when 
+		if (currentGearIndex == 0) {
+			currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
+		} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed){
+			currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+		}
 
-        currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, maxSpeed);
+		//currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, currentGear.maxSpeed);
 
 		//Actually applying to the RB
 		rb.velocity =  transform.TransformVector( new Vector3(0,0, currentSpeed));
@@ -71,9 +109,13 @@ public class PlayerController : Singleton<PlayerController> {
 
     void Steering()
     {
-		GamePadState state = GamePad.GetState (steeringIndex);
+		GamePadState state = GamePad.GetState (steerPlayerIndex);
 
-		horizontalInput = -state.Triggers.Left + state.Triggers.Right;
+		horizontalInput = state.ThumbSticks.Left.X;
+
+		//if (Mathf.Abs (horizontalInput) < 0.1f) {
+		currentSteerRotation *= (1-steerAutoDecrease * Time.deltaTime);
+		//}
 
 		currentSteerRotation += horizontalInput * steeringSpeed * Time.deltaTime;
         currentSteerRotation = Mathf.Clamp(currentSteerRotation, -maxSteer, maxSteer);
@@ -83,4 +125,13 @@ public class PlayerController : Singleton<PlayerController> {
         rb.angularVelocity = new Vector3(0, currentSteerRotation * currentSpeed);
     }
 
+
+}
+
+[System.Serializable]
+public struct Gear  {
+
+	public float minSpeed;
+	public float maxSpeed;
+	public float speedIncrease;
 }
