@@ -15,13 +15,18 @@ public class PartyGuy : MonoBehaviour
 	public float stoppingDistance;
 	public Blood bloodPrefab;
 
+	public AudioClip dieSound;
+	public float volume= 1.0f;
+	private AudioSource audioSource;
+
 	float realSpeed;
 
 	private Rigidbody rb;
 	// Use this for initialization
 	void Start ()
 	{
-		rb = GetComponent<Rigidbody> ();	
+		rb = GetComponent<Rigidbody> ();
+		audioSource = GetComponent<AudioSource>();	
 	}
 	
 	// Update is called once per frame
@@ -64,7 +69,7 @@ public class PartyGuy : MonoBehaviour
 	void Die ()
 	{
 		Instantiate (bloodPrefab, transform.position, transform.rotation);
-
+		audioSource.PlayOneShot(dieSound, volume);
 		Destroy (gameObject);
 	}
 }
