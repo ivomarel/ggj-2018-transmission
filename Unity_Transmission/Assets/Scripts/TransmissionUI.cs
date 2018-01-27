@@ -10,7 +10,6 @@ public class TransmissionUI : MonoBehaviour {
 	public Vector3 gearBoxSize;
 	public float gearBoxPadding;
 
-	private int currentGear = -1;
 	// The gear area the stick is in. we cannot switch directly to another gear
 	private int currentGearArea = -1;
 
@@ -33,10 +32,6 @@ public class TransmissionUI : MonoBehaviour {
 		} else {
 			lockedGearHandler (transmissionInput);
 		}
-		
-		if (currentGear > gearCount) {
-			Debug.Log("Gear number should be between 0 and " + gearCount);
-		}
 	}
 
 	float getGearRad(int gear) {
@@ -53,7 +48,7 @@ public class TransmissionUI : MonoBehaviour {
 
 	void freeGearHandler(GamePadThumbSticks.StickValue input) {
 		knob.localPosition = Vector3.Scale(new Vector3 (input.X, input.Y), gearBoxSize);
-		currentGear = -1;
+		PlayerController.instance.updateGear(-1);
 		currentGearArea = -1;
 
 		GamePad.SetVibration(PlayerController.instance.transmissionIndex, 0f, 0f);
@@ -88,7 +83,7 @@ public class TransmissionUI : MonoBehaviour {
 			if (currentGearArea == -1) {
 				Debug.LogError("Gear validated without valid Gear area !!!");
 			}
-			currentGear = currentGearArea;
+			PlayerController.instance.updateGear(currentGearArea);
 		}
 	}
 

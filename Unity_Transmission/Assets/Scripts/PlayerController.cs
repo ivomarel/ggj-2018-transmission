@@ -69,28 +69,11 @@ public class PlayerController : Singleton<PlayerController> {
 
         Speeding();
         Steering();
-		TempGearing ();
 
 	}
 
-	void TempGearing () {
-		GamePadState state = Xbox.GetState (speedPlayerIndex);
-		GamePadState prevState = Xbox.GetPrevState (speedPlayerIndex);
-
-		if (state.Buttons.Y == ButtonState.Pressed && prevState.Buttons.Y == ButtonState.Released) {
-			if (currentGearIndex < gears.Length - 1) {
-				currentGearIndex++;
-			}
-		}
-
-		if (state.Buttons.A == ButtonState.Pressed && prevState.Buttons.A == ButtonState.Released) {
-			
-			if (currentGearIndex > 0) {
-				currentGearIndex--;
-			}
-		}
-
-
+	public void updateGear(int gear) {
+		currentGearIndex = gear;
 	}
 
     void Speeding () {
