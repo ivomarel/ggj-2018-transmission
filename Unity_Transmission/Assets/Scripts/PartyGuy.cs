@@ -32,7 +32,7 @@ public class PartyGuy : MonoBehaviour
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();	
-		sr = GetComponent<SpriteRenderer> ();
+		sr = GetComponentInChildren<SpriteRenderer> ();
 		SetState (State.Trumping);
 	}
 
@@ -55,7 +55,18 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnTrumping ()
 	{
+		Vector3 currentDest = Vector3.zero;
+		float walkTime = 3;
+		float walkTimer = Mathf.Infinity;
 		while (true) {
+			if (walkTimer >= walkTime) {
+				walkTimer = 0;
+				walkTime = Random.Range (3f, 5f);
+				currentDest = transform.position + new Vector3 (Random.Range (-5f, 5f), 0, Random.Range (-5f, 5f));
+			}
+			walkTimer += Time.fixedDeltaTime;
+			WalkToDestination (currentDest);
+
 			yield return new WaitForFixedUpdate ();
 		}
 	}
@@ -75,6 +86,7 @@ public class PartyGuy : MonoBehaviour
 	IEnumerator OnTrancing ()
 	{
 		while (true) {
+			WalkToDestination (PlayerController.instance.transform.position);
 			yield return new WaitForFixedUpdate ();
 		}
 	}
@@ -82,18 +94,23 @@ public class PartyGuy : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		Vector3 dirToPlayer = PlayerController.instance.transform.position - transform.position;
-		dirToPlayer.y = 0;
+		
+	}
 
-		float d = dirToPlayer.sqrMagnitude;
+	void WalkToDestination (Vector3 dest)
+	{
+		Vector3 dir = dest - transform.position;
+		dir.y = 0;
+
+		float d = dir.sqrMagnitude;
 		if (d < stoppingDistance * stoppingDistance) {
 			realSpeed = 0;
 		} else if (d > stoppingDistance * stoppingDistance * 1.1f) {
 			realSpeed = speed;
 		}
 
-		rb.velocity = realSpeed * dirToPlayer.normalized;
-		transform.rotation = (Quaternion.RotateTowards (transform.rotation, Quaternion.LookRotation (dirToPlayer), rotationSpeed)); 
+		rb.velocity = realSpeed * dir.normalized;
+		transform.rotation = (Quaternion.RotateTowards (transform.rotation, Quaternion.LookRotation (dir), rotationSpeed));
 	}
 
 	void OnCollisionEnter (Collision collisionInfo)
