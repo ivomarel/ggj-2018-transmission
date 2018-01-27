@@ -22,7 +22,10 @@ public class PlayerController : Singleton<PlayerController> {
 	[Range(0,1)]
 	public float gearRestrictedRoamingProportion = 0.15f;
 
+	public float badGearRumbleMultiplier;
+
 	internal int currentGearIndex;
+
 
 	public Gear currentGear {
 		get {
@@ -121,13 +124,31 @@ public class PlayerController : Singleton<PlayerController> {
 				currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
 			} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed) {
 				currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
+				GamePad.SetVibration(gearPlayerIndex, 0f, 0f);
+			} else {
+				// Rumble we reach the max or min speed, gear is not fit
+				setClutchRumble (currentSpeed, currentGear.minSpeed, currentGear.maxSpeed);
 			}
+		} else {
+			GamePad.SetVibration(gearPlayerIndex, 0f, 0f);
 		}
 		//currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, currentGear.maxSpeed);
 
 		//Actually applying to the RB
 		rb.velocity =  transform.TransformVector( new Vector3(0,0, currentSpeed));
     }
+
+	void setClutchRumble(float speed, float minSpeed, float maxSpeed){
+		float powerX = 0f;
+		float powerY= 0f;
+		if (speed < minSpeed) {
+			powerX = minSpeed - speed;
+		}
+		if (maxSpeed < speed) {
+			powerY = speed - maxSpeed;
+		}
+		GamePad.SetVibration(gearPlayerIndex, powerX, powerY);
+	}
 
     void Steering()
 	{	
