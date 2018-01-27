@@ -59,12 +59,12 @@ public class TransmissionUI : MonoBehaviour {
 			float normalizedAngle = (Mathf.PI / 2 + gearRad + 2 * Mathf.PI - inputAngle (input)) / gearRad;
 			currentGearArea = Mathf.FloorToInt(normalizedAngle + 0.5f) % gearCount;
 		}
-		Debug.Log ("Closest gear area" + currentGearArea);
+	//	Debug.Log ("Closest gear area" + currentGearArea);
 
 		float maxGearAreaAngle = getGearRad(currentGearArea) + PlayerController.instance.gearRestrictedRoamingProportion * gearRad / 2 ;
 		float minGearAreaAngle = getGearRad(currentGearArea) - PlayerController.instance.gearRestrictedRoamingProportion * gearRad / 2 ;
 
-		Debug.Log(minGearAreaAngle + ", " + inputAngle (input) + ", " + maxGearAreaAngle);
+		//Debug.Log(minGearAreaAngle + ", " + inputAngle (input) + ", " + maxGearAreaAngle);
 
 		float clampedAngle = Mathf.Clamp(inputAngle(input) + 2*Mathf.PI, minGearAreaAngle + 2*Mathf.PI, maxGearAreaAngle + 2*Mathf.PI);
 

@@ -14,7 +14,7 @@ public class Blood : MonoBehaviour {
 	IEnumerator Start () {
 		sr = GetComponentInChildren<SpriteRenderer> ();
 		yield return new WaitForSeconds (fadeDelay);
-		sr.DOFade(0, fadeDuration);
+		sr.DOFade(0, fadeDuration).OnComplete(() => {Destroy(gameObject);});
 	}
 	
 	// Update is called once per frame

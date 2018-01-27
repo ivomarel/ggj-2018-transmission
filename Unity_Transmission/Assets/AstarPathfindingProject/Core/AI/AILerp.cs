@@ -77,6 +77,8 @@ namespace Pathfinding {
 
 		public Vector3 destination { get; set; }
 
+		private Rigidbody rb;
+
 		/** Determines if the character's position should be coupled to the Transform's position.
 		 * If false then all movement calculations will happen as usual, but the object that this component is attached to will not move
 		 * instead only the #position property will change.
@@ -242,7 +244,7 @@ namespace Pathfinding {
 			base.Awake();
 			//This is a simple optimization, cache the transform component lookup
 			tr = transform;
-
+			rb = GetComponent<Rigidbody> ();
 			seeker = GetComponent<Seeker>();
 
 			// Tell the StartEndModifier to ask for our exact position when post processing the path This
