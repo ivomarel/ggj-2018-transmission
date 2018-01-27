@@ -88,8 +88,10 @@ public class PlayerController : Singleton<PlayerController>
 		yield return null;
 		yield return null;
 		guys = FindObjectsOfType<PartyGuy> ();
-	}
 
+		setPlayersIndexes();
+	}
+		
 
 	// Update is called once per frame
 	void Update ()
@@ -215,6 +217,20 @@ public class PlayerController : Singleton<PlayerController>
 		rb.angularVelocity = new Vector3 (0, currentSteerRotation * currentSpeed);
 	}
 
+	void setPlayersIndexes(){
+		speedPlayerIndex = PlayerIndex.One;
+		gearPlayerIndex = PlayerIndex.One;
+		steerPlayerIndex = PlayerIndex.One;
+
+		if (playerCount == 2) {
+			gearPlayerIndex = PlayerIndex.Two;
+		}
+
+		if (playerCount == 3) {
+			speedPlayerIndex = PlayerIndex.Two;
+			gearPlayerIndex = PlayerIndex.Three;
+		}
+	}
 
 }
 
