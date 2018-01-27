@@ -40,6 +40,15 @@ public class PlayerController : Singleton<PlayerController> {
 
     internal float currentSteerRotation;
 
+	[Header("Transmission")]
+	public PlayerIndex transmissionIndex;
+	[Range(0,1)]
+	public float acceptedGearThreshold = 0.8f;
+	[Range(0,1)]
+	public float freeGearThreshold = 0.4f;
+	[Range(0,1)]
+	public float gearRestrictedRoamingProportion = 0.15f;
+
     //Components
     Rigidbody rb;
 
@@ -60,28 +69,11 @@ public class PlayerController : Singleton<PlayerController> {
 
         Speeding();
         Steering();
-		TempGearing ();
 
 	}
 
-	void TempGearing () {
-		GamePadState state = Xbox.GetState (speedPlayerIndex);
-		GamePadState prevState = Xbox.GetPrevState (speedPlayerIndex);
-
-		if (state.Buttons.Y == ButtonState.Pressed && prevState.Buttons.Y == ButtonState.Released) {
-			if (currentGearIndex < gears.Length - 1) {
-				currentGearIndex++;
-			}
-		}
-
-		if (state.Buttons.A == ButtonState.Pressed && prevState.Buttons.A == ButtonState.Released) {
-			
-			if (currentGearIndex > 0) {
-				currentGearIndex--;
-			}
-		}
-
-
+	public void updateGear(int gear) {
+		currentGearIndex = gear;
 	}
 
     void Speeding () {
