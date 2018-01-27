@@ -39,7 +39,8 @@ GameObject:
   - component: {fileID: 136517104685055106}
   - component: {fileID: 54849435671580484}
   - component: {fileID: 114376874498539760}
-  - component: {fileID: 114752039133966304}
+  - component: {fileID: 114871265161584602}
+  - component: {fileID: 114857010367025500}
   m_Layer: 9
   m_Name: PartyGuy
   m_TagString: Untagged
@@ -113,8 +114,11 @@ MonoBehaviour:
       m_Bits: 4294967295
     useGraphRaycasting: 0
   traversableTags: -1
+  traversableTagsCompatibility:
+    tagsChange: -1
+    tagsSet: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
---- !u!114 &114752039133966304
+--- !u!114 &114857010367025500
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -122,20 +126,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786127411244362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847a14d4dc9cc43679ab34fc78e0182f, type: 3}
+  m_Script: {fileID: 11500000, guid: 67057d14b4f9f4919958ec635b71f22b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 2
-  repathRate: 0.5
-  canSearch: 1
-  canMove: 1
-  speed: 3
-  enableRotation: 1
-  rotationIn2D: 0
-  rotationSpeed: 10
-  interpolatePathSwitches: 1
-  switchPathInterpolationSpeed: 5
-  targetCompatibility: {fileID: 0}
+  repathRate: 1
+  maxSpeed: 10
+  moveNextDist: 1
+  slowdownDistance: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &114871265161584602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786127411244362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560112f876f5746c780eca0d404e7139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  radius: 0.26
+  height: 2
+  locked: 0
+  lockWhenNotMoving: 1
+  agentTimeHorizon: 2
+  obstacleTimeHorizon: 2
+  maxNeighbours: 10
+  layer: 1
+  collidesWith: -1
+  wallAvoidForce: 1
+  wallAvoidFalloff: 1
+  priority: 0.5
+  center: 1
+  debug: 0
 --- !u!114 &114929332366279306
 MonoBehaviour:
   m_ObjectHideFlags: 1

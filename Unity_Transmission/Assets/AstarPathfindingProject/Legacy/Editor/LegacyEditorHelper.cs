@@ -12,14 +12,14 @@ namespace Pathfinding.Legacy {
 			if (GUILayout.Button("Upgrade")) {
 				Undo.RecordObjects(targets.Select(s => (s as Component).gameObject).ToArray(), "Upgrade from Legacy Component");
 				foreach (var tg in targets) {
-					var comp = tg as Component;
-					var components = comp.gameObject.GetComponents<Component>();
-					int index = System.Array.IndexOf(components, comp);
-					var newRVO = Undo.AddComponent(comp.gameObject, upgradeType);
+					var rvo = tg as Component;
+					var components = rvo.gameObject.GetComponents<Component>();
+					int index = System.Array.IndexOf(components, rvo);
+					var newRVO = Undo.AddComponent(rvo.gameObject, upgradeType);
 					foreach (var field in newRVO.GetType().GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)) {
-						field.SetValue(newRVO, field.GetValue(comp));
+						field.SetValue(newRVO, field.GetValue(rvo));
 					}
-					Undo.DestroyObjectImmediate(comp);
+					Undo.DestroyObjectImmediate(rvo);
 					for (int i = components.Length - 1; i > index; i--) UnityEditorInternal.ComponentUtility.MoveComponentUp(newRVO);
 				}
 			}

@@ -64,18 +64,22 @@ namespace Pathfinding.Legacy {
 
 		protected override void Awake () {
 			base.Awake();
+			if (rvoController != null) {
+				if (rvoController is LegacyRVOController) (rvoController as LegacyRVOController).enableRotation = false;
+				else Debug.LogError("The LegacyAIPath component only works with the legacy RVOController, not the latest one. Please upgrade this component", this);
+			}
 		}
 
 		/** Called when a requested path has finished calculation.
 		 * A path is first requested by #SearchPath, it is then calculated, probably in the same or the next frame.
 		 * Finally it is returned to the seeker which forwards it to this function.\n
 		 */
-		protected override void OnPathComplete (Path _p) {
+		public override void OnPathComplete (Path _p) {
 			ABPath p = _p as ABPath;
 
 			if (p == null) throw new System.Exception("This function only handles ABPaths, do not use special path types");
 
-			waitingForPathCalculation = false;
+			canSearchAgain = true;
 
 			//Claim the new path
 			p.Claim(this);
@@ -95,7 +99,7 @@ namespace Pathfinding.Legacy {
 
 			//Reset some variables
 			currentWaypointIndex = 0;
-			reachedEndOfPath = false;
+			TargetReached = false;
 
 			//The next row can be used to find out if the path could be found or not
 			//If it couldn't (error == true), then a message has probably been logged to the console
@@ -115,6 +119,9 @@ namespace Pathfinding.Legacy {
 				dir /= magn;
 				int steps = (int)(magn/pickNextWaypointDist);
 
+	#if ASTARDEBUG
+				Debug.DrawLine(p1, p2, Color.red, 1);
+	#endif
 
 				for (int i = 0; i <= steps; i++) {
 					CalculateVelocity(p1);
@@ -131,6 +138,9 @@ namespace Pathfinding.Legacy {
 			//Rotate towards targetDirection (filled in by CalculateVelocity)
 			RotateTowards(targetDirection);
 
+			if (rvoController != null) {
+				rvoController.Move(dir);
+			} else
 			if (controller != null) {
 				controller.SimpleMove(dir);
 			} else if (rigid != null) {
@@ -204,9 +214,10 @@ namespace Pathfinding.Legacy {
 			float slowdown = Mathf.Clamp01(targetDist / slowdownDistance);
 
 			this.targetDirection = dir;
+			this.targetPoint = targetPosition;
 
 			if (currentWaypointIndex == vPath.Count-1 && targetDist <= endReachedDistance) {
-				if (!reachedEndOfPath) { reachedEndOfPath = true; OnTargetReached(); }
+				if (!TargetReached) { TargetReached = true; OnTargetReached(); }
 
 				//Send a move request, this ensures gravity is applied
 				return Vector3.zero;
@@ -214,8 +225,15 @@ namespace Pathfinding.Legacy {
 
 			Vector3 forward = tr.forward;
 			float dot = Vector3.Dot(dir.normalized, forward);
-			float sp = maxSpeed * Mathf.Max(dot, minMoveScale) * slowdown;
+			float sp = speed * Mathf.Max(dot, minMoveScale) * slowdown;
 
+	#if ASTARDEBUG
+			Debug.DrawLine(vPath[currentWaypointIndex-1], vPath[currentWaypointIndex], Color.black);
+			Debug.DrawLine(GetFeetPosition(), targetPosition, Color.red);
+			Debug.DrawRay(targetPosition, Vector3.up, Color.red);
+			Debug.DrawRay(GetFeetPosition(), dir, Color.yellow);
+			Debug.DrawRay(GetFeetPosition(), forward*sp, Color.cyan);
+	#endif
 
 			if (Time.deltaTime > 0) {
 				sp = Mathf.Clamp(sp, 0, targetDist/(Time.deltaTime*2));

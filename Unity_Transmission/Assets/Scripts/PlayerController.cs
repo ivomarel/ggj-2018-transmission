@@ -85,9 +85,11 @@ public class PlayerController : Singleton<PlayerController> {
 
 	private void updatePlayersPos() {
 		print(speedPlayerIndex.ToString());
-		speedPlayerFeedback.text = speedPlayerIndex.ToString();
-		steerPlayerFeedback.text = steerPlayerIndex.ToString();
-		transmissionPlayerFeedback.text = gearPlayerIndex.ToString();
+		if (speedPlayerFeedback != null) {
+			speedPlayerFeedback.text = speedPlayerIndex.ToString ();
+			steerPlayerFeedback.text = steerPlayerIndex.ToString ();
+			transmissionPlayerFeedback.text = gearPlayerIndex.ToString ();
+		}
 	}
 
 	public void updateGear(int gear) {

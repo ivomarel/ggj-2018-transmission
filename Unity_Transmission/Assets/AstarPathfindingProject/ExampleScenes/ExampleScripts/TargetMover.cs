@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Linq;
 
 namespace Pathfinding {
 	/** Moves the target in example scenes.
@@ -15,7 +14,9 @@ namespace Pathfinding {
 		public LayerMask mask;
 
 		public Transform target;
-		IAstarAI[] ais;
+		RichAI[] ais;
+		AIPath[] ais2;
+		AILerp[] ais3;
 
 		/** Determines if the target position should be updated every frame or only on double-click */
 		public bool onlyOnDoubleClick;
@@ -26,9 +27,10 @@ namespace Pathfinding {
 		public void Start () {
 			//Cache the Main Camera
 			cam = Camera.main;
-			// Slightly inefficient way of finding all AIs, but this is just an example script, so it doesn't matter much.
-			// FindObjectsOfType does not support interfaces unfortunately.
-			ais = FindObjectsOfType<MonoBehaviour>().OfType<IAstarAI>().ToArray();
+			ais = FindObjectsOfType<RichAI>();
+			ais2 = FindObjectsOfType<AIPath>();
+			ais3 = FindObjectsOfType<AILerp>();
+
 			useGUILayout = false;
 		}
 
@@ -38,7 +40,7 @@ namespace Pathfinding {
 			}
 		}
 
-		/** Update is called once per frame */
+		// Update is called once per frame
 		void Update () {
 			if (!onlyOnDoubleClick && cam != null) {
 				UpdateTargetPosition();
@@ -54,7 +56,7 @@ namespace Pathfinding {
 				newPosition.z = 0;
 				positionFound = true;
 			} else {
-				// Fire a ray through the scene at the mouse position and place the target where it hits
+				//Fire a ray through the scene at the mouse position and place the target where it hits
 				RaycastHit hit;
 				if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, mask)) {
 					newPosition = hit.point;
@@ -66,8 +68,22 @@ namespace Pathfinding {
 				target.position = newPosition;
 
 				if (onlyOnDoubleClick) {
-					for (int i = 0; i < ais.Length; i++) {
-						if (ais[i] != null) ais[i].SearchPath();
+					if (ais != null) {
+						for (int i = 0; i < ais.Length; i++) {
+							if (ais[i] != null) ais[i].UpdatePath();
+						}
+					}
+
+					if (ais2 != null) {
+						for (int i = 0; i < ais2.Length; i++) {
+							if (ais2[i] != null) ais2[i].SearchPath();
+						}
+					}
+
+					if (ais3 != null) {
+						for (int i = 0; i < ais3.Length; i++) {
+							if (ais3[i] != null) ais3[i].SearchPath();
+						}
 					}
 				}
 			}

@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Pathfinding;
+using Pathfinding.Examples;
 
 public class PartyGuy : MonoBehaviour {
 
 	public float stoppingDistance;
 	public Blood bloodPrefab;
-	AILerp agent;
+	RVOExampleAgent agent;
+
+	float s;
 
 	// Use this for initialization
 	void Start () {
-		agent = GetComponent<AILerp> ();
+		agent = GetComponent<RVOExampleAgent> ();
+		s = agent.maxSpeed;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		agent.destination = PlayerController.instance.transform.position;
+		agent.SetTarget(PlayerController.instance.transform.position);
 
 		float d = Vector3.Distance (transform.position, PlayerController.instance.transform.position);
 		if (d < stoppingDistance) {
-			agent.isStopped = true;
+			agent.maxSpeed = 0;
 		} else if (d > stoppingDistance * 1.1f){
-			agent.isStopped = false;
+			agent.maxSpeed = s;
 		}
 	}
 
