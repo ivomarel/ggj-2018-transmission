@@ -23,7 +23,7 @@ public class TransmissionUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GamePadState state = GamePad.GetState (PlayerController.instance.transmissionIndex);
+		GamePadState state = GamePad.GetState (PlayerController.instance.gearPlayerIndex);
 		GamePadThumbSticks.StickValue transmissionInput = state.ThumbSticks.Right;
 
 		if (inputStrength(transmissionInput) <= PlayerController.instance.freeGearThreshold) {
@@ -51,7 +51,7 @@ public class TransmissionUI : MonoBehaviour {
 		PlayerController.instance.updateGear(-1);
 		currentGearArea = -1;
 
-		GamePad.SetVibration(PlayerController.instance.transmissionIndex, 0f, 0f);
+		GamePad.SetVibration(PlayerController.instance.gearPlayerIndex, 0f, 0f);
 	}
 
 	void lockedGearHandler(GamePadThumbSticks.StickValue input) {
@@ -105,7 +105,7 @@ public class TransmissionUI : MonoBehaviour {
 		}
 
 		GamePad.SetVibration(
-			PlayerController.instance.transmissionIndex,
+			PlayerController.instance.gearPlayerIndex,
 			powerX,
 			powerY
 		);
