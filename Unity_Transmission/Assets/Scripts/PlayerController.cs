@@ -18,6 +18,9 @@ public class PlayerController : Singleton<PlayerController> {
 	Gear currentGear {
 		get {
 			if (currentGearIndex == -1) {
+				if (keyboardMode) {
+					return gears [1];
+				}
 				return new Gear () {
 					isNeutral = true
 				};
@@ -25,6 +28,8 @@ public class PlayerController : Singleton<PlayerController> {
 			return gears [currentGearIndex];
 		}
 	}
+
+	public bool keyboardMode;
 
 	//public AnimationCurve speedUpCurve;
 	[Header("Speeding")]
@@ -82,9 +87,13 @@ public class PlayerController : Singleton<PlayerController> {
 	}
 
     void Speeding () {
-		GamePadState state = GamePad.GetState (speedPlayerIndex);
+		if (keyboardMode) {
+			verticalInput = Input.GetAxis ("Vertical");
+		}else{
+			GamePadState state = GamePad.GetState (speedPlayerIndex);
 
-		verticalInput = state.Triggers.Right;
+			verticalInput = state.Triggers.Right;
+		}
 	//	verticalInput = Mathf.Max (0, verticalInput);
 
 		currentSpeed = transform.InverseTransformVector(rb.velocity).z;
@@ -107,11 +116,14 @@ public class PlayerController : Singleton<PlayerController> {
     }
 
     void Steering()
-    {
-		GamePadState state = GamePad.GetState (steerPlayerIndex);
+	{	
+		if (keyboardMode) {
+			horizontalInput = Input.GetAxis ("Horizontal");
+		} else {
+			GamePadState state = GamePad.GetState (steerPlayerIndex);
 
-		horizontalInput = state.ThumbSticks.Left.X;
-
+			horizontalInput = state.ThumbSticks.Left.X;
+		}
 		//if (Mathf.Abs (horizontalInput) < 0.1f) {
 		currentSteerRotation *= (1-steerAutoDecrease * Time.deltaTime);
 		//}

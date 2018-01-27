@@ -142,7 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildDelay: 0
   nRooms: 500
-  realRoomSize: 3.5
+  realRoomSize: 3.3
   rooms:
   - {fileID: 114907988080000286, guid: deaa1faf27e9c034b8fd0df3b0115cab, type: 2}
   - {fileID: 114907988080000286, guid: 9e97725be7f65654aad010409e0b123d, type: 2}
