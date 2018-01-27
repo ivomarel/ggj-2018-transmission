@@ -40,6 +40,15 @@ public class PlayerController : Singleton<PlayerController> {
 
     internal float currentSteerRotation;
 
+	[Header("Transmission")]
+	public PlayerIndex transmissionIndex;
+	[Range(0,1)]
+	public float acceptedGearThreshold = 0.8f;
+	[Range(0,1)]
+	public float freeGearThreshold = 0.4f;
+	[Range(0,1)]
+	public float gearRestrictedRoamingProportion = 0.15f;
+
     //Components
     Rigidbody rb;
 
