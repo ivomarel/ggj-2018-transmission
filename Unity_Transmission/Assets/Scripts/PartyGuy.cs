@@ -46,10 +46,25 @@ public class PartyGuy : MonoBehaviour
 		if (collisionInfo.collider.GetComponent<PartyGuy> ()) {
 			return;
 		}
-		if (collisionInfo.relativeVelocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
-			Instantiate (bloodPrefab, transform.position, transform.rotation);
 
-			Destroy (gameObject);
+		CopCar cop = collisionInfo.collider.GetComponent<CopCar> ();
+
+		if (cop) {
+			if (cop.agent.velocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
+				Die ();
+			}
+			return;
 		}
+
+		if (collisionInfo.relativeVelocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
+			Die ();
+		}
+	}
+
+	void Die ()
+	{
+		Instantiate (bloodPrefab, transform.position, transform.rotation);
+
+		Destroy (gameObject);
 	}
 }

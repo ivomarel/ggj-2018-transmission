@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class CopCar : MonoBehaviour
 {
 
-	NavMeshAgent agent;
+	internal NavMeshAgent agent;
 	// Use this for initialization
 	void Start ()
 	{
