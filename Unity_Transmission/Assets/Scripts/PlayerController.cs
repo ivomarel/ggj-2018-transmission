@@ -81,6 +81,10 @@ public class PlayerController : Singleton<PlayerController> {
 		currentGearIndex = gear;
 	}
 
+	public float getSpeed(){
+		return currentSpeed;
+	}
+
     void Speeding () {
 		GamePadState state = GamePad.GetState (speedPlayerIndex);
 
