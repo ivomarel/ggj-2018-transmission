@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Pathfinding;
 using Pathfinding.Examples;
 
+[RequireComponent(typeof(AudioSource))]
 public class PartyGuy : MonoBehaviour
 {
 
@@ -15,9 +16,9 @@ public class PartyGuy : MonoBehaviour
 	public float stoppingDistance;
 	public Blood bloodPrefab;
 
+	private AudioSource audioSource;
 	public AudioClip dieSound;
 	public float volume= 1.0f;
-	private AudioSource audioSource;
 
 	float realSpeed;
 
@@ -63,6 +64,8 @@ public class PartyGuy : MonoBehaviour
 
 		if (collisionInfo.relativeVelocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
 			Die ();
+		} else {
+			audioSource.Play();
 		}
 	}
 
