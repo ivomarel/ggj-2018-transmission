@@ -4,6 +4,10 @@ using System.Text;
 
 public class Room : MonoBehaviour {
 
+	public PartyGuy unitPrefab;
+	public int maxUnits = 15;
+	public int minUnits = 1;
+
 	public bool north;
 	public bool east;
 	public bool south;
@@ -40,10 +44,11 @@ public class Room : MonoBehaviour {
 		transform.Rotate (0, 90, 0);
 	}
 
-	void Start()
+	IEnumerator Start()
 	{
 		//possibleExits = GetComponentsInChildren<SphereCollider> ();
-
+		yield return null;
+		SpawnUnits ();
 	}
 
 	public Exit[] getExits ()
@@ -51,6 +56,15 @@ public class Room : MonoBehaviour {
 		return GetComponentsInChildren<Exit> ();
 
 		//return GetComponent<Room> ();
+	}
+
+	public void SpawnUnits () {
+		if (minUnits == 2) {
+			int r = Random.Range (minUnits, maxUnits);
+			for (int i = 0; i < r; i++) {
+				Instantiate (unitPrefab, transform.position, transform.rotation);
+			}
+		}
 	}
 
 

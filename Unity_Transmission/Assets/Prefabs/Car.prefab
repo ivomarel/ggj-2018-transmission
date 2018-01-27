@@ -118,6 +118,7 @@ MonoBehaviour:
   - minSpeed: 9
     maxSpeed: 11
     speedIncrease: 10
+  keyboardMode: 0
   speedPlayerIndex: 0
   speedIncrease: 10
   speedAutoDecrease: 1
@@ -127,6 +128,10 @@ MonoBehaviour:
   steeringSpeed: 2
   steerAutoDecrease: 3
   maxSteer: 0.3
+  transmissionIndex: 0
+  acceptedGearThreshold: 0.8
+  freeGearThreshold: 0.4
+  gearRestrictedRoamingProportion: 0.15
 --- !u!136 &136969928176892268
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -173,7 +178,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_Sprite: {fileID: 21300000, guid: 0e6b2eb0df9b04e38ac31cdabac5961e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
