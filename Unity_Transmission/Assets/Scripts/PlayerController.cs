@@ -104,9 +104,9 @@ public class PlayerController : Singleton<PlayerController>
 		Speeding ();
 		Steering ();
 
-		UpdateScore();
+		UpdateScore ();
 		// FIXME should not be done every update when menu is setup
-		checkVictory();
+		checkVictory ();
 	}
 
 	void UpdateScore ()
@@ -247,13 +247,14 @@ public class PlayerController : Singleton<PlayerController>
 		}
 	}
 
-	void checkVictory() {
-		Debug.Log (score / maxScore);
-		Debug.Log (victoryThreshold);
-		if (score/maxScore > victoryThreshold) {
+	void checkVictory ()
+	{
+		//Debug.Log (score / maxScore);
+		//	Debug.Log (victoryThreshold);
+		if (score / maxScore > victoryThreshold) {
 			Debug.Log ("success");
 			victory = true;
-			SceneManager.LoadScene("GameOver");
+			SceneManager.LoadScene ("GameOver");
 		}
 	}
 }
