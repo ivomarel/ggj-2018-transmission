@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-public class WorldGrid : MonoBehaviour
+public class WorldGrid : Singleton<WorldGrid>
 {
 
 	public float buildDelay;
@@ -15,12 +15,29 @@ public class WorldGrid : MonoBehaviour
 
 	public Room[] rooms;
 
+	internal Room[] activeRooms;
+
 	public int[,] dungeon;
 
 	Queue<GridPos> roomPosQueue;
 
-	IEnumerator Start ()
+	public void CreateDungeon ()
 	{
+		foreach (Room r in rooms) {
+			r.gameObject.SetActive (false);
+		}
+
+		StartCoroutine (CreateDungeonCor ());
+
+		activeRooms = GetComponentsInChildren<Room> (true);
+		foreach (Room r in activeRooms) {
+			r.gameObject.SetActive (true);
+		}
+	}
+
+	IEnumerator CreateDungeonCor ()
+	{
+
 		dungeon = new int[nRooms * ROOM_SIZE, nRooms * ROOM_SIZE];
 		for (int i = 0; i < nRooms * ROOM_SIZE; i++) {
 			for (int j = 0; j < nRooms * ROOM_SIZE; j++) {
@@ -53,6 +70,8 @@ public class WorldGrid : MonoBehaviour
 			}
 		}
 			
+
+			
 		//	PrintDungeon ();
 
 		//	PrintQueue ();
@@ -68,7 +87,7 @@ public class WorldGrid : MonoBehaviour
 	void PlaceRoom (int roomIndex, int x, int y)
 	{
 		//We instantiate a roomClone. This might be destroyed later (not efficient but keeping it for now)
-		Room roomClone = Instantiate (rooms [roomIndex]);
+		Room roomClone = Instantiate (rooms [roomIndex], transform);
 
 		//For safety, we break out of the array when all rooms (with all rotations) were checked. This should never happen though!
 		int breakPoint = 0;
@@ -92,7 +111,7 @@ public class WorldGrid : MonoBehaviour
 					//Debug.LogError ("Unity would have crashed...");
 					//return;
 				}
-				roomClone = Instantiate (rooms [roomIndex]);
+				roomClone = Instantiate (rooms [roomIndex], transform);
 
 				breakPoint++;
 			}

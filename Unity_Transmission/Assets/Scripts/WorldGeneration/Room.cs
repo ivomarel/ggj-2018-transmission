@@ -5,7 +5,6 @@ using System.Text;
 public class Room : MonoBehaviour
 {
 
-	public PartyGuy unitPrefab;
 	public int maxUnits = 15;
 	public int minUnits = 1;
 
@@ -67,8 +66,13 @@ public class Room : MonoBehaviour
 		
 		int r = Random.Range (minUnits, maxUnits);
 		for (int i = 0; i < r; i++) {
-			Instantiate (unitPrefab, transform.position + new Vector3 (Random.Range (-1f, 1f), 0, Random.Range (-1f, 1f)), transform.rotation);
+			Instantiate (GameManager.instance.guyPrefab, transform.position + new Vector3 (Random.Range (-1f, 1f), 0, Random.Range (-1f, 1f)), transform.rotation);
 		}
+
+	}
+
+	public void SpawnCar ()
+	{
 
 	}
 
