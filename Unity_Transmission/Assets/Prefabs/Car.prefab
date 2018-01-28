@@ -251,7 +251,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gearPlayerIndex: 0
-  gears: []
+  gears:
+  - minSpeed: -100
+    maxSpeed: 0
+    speedIncrease: 10
+  - minSpeed: -100
+    maxSpeed: 10
+    speedIncrease: 10
+  - minSpeed: 2
+    maxSpeed: 7
+    speedIncrease: 10
+  - minSpeed: 5
+    maxSpeed: 9
+    speedIncrease: 10
+  - minSpeed: 7
+    maxSpeed: 11
+    speedIncrease: 10
+  - minSpeed: 9
+    maxSpeed: 13
+    speedIncrease: 10
   acceptedGearThreshold: 0.8
   freeGearThreshold: 0.4
   gearRestrictedRoamingProportion: 0.15
