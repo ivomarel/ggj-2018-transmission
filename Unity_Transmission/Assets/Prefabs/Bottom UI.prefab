@@ -612,13 +612,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582804725651850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 248ae9c8a17834b948d396e4ac73d21a, type: 3}
+  m_Script: {fileID: 11500000, guid: b82b2ab7cfbcf8b48b1f40e91400e45b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currrentSteerText: {fileID: 0}
-  currrentGearText: {fileID: 0}
   steeringWheelUI: {fileID: 224246930545786180}
   steeringWheelRotationMultiplier: 90
+  transmissionPlayerFeedback: {fileID: 114194380732668252}
+  speedPlayerFeedback: {fileID: 114848705493245982}
+  steerPlayerFeedback: {fileID: 114372756275121646}
 --- !u!114 &114537752235424854
 MonoBehaviour:
   m_ObjectHideFlags: 1

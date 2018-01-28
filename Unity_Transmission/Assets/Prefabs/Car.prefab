@@ -110,6 +110,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1783565318721744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4739272972511248}
+  - component: {fileID: 114934125384017178}
+  - component: {fileID: 135880612042502306}
+  m_Layer: 8
+  m_Name: Radar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4017028524105044
 Transform:
   m_ObjectHideFlags: 1
@@ -149,6 +166,19 @@ Transform:
   m_Father: {fileID: 4879473258235264}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &4739272972511248
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1783565318721744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4879473258235264}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4811470868666762
 Transform:
   m_ObjectHideFlags: 1
@@ -177,6 +207,7 @@ Transform:
   - {fileID: 4017028524105044}
   - {fileID: 4018600414322288}
   - {fileID: 4811470868666762}
+  - {fileID: 4739272972511248}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -224,18 +255,29 @@ MonoBehaviour:
   acceptedGearThreshold: 0.8
   freeGearThreshold: 0.4
   gearRestrictedRoamingProportion: 0.15
-  badGearRumbleMultiplier: 0
-  health: 0
-  keyboardMode: 0
+  badGearRumbleMultiplier: 20
+  health: 500
+  keyboardMode: 1
   speedPlayerIndex: 0
-  speedIncrease: 0
-  speedAutoDecrease: 0
-  speedBreakDecrease: 0
-  maxBackwardsSpeed: 0
+  speedIncrease: 10
+  speedAutoDecrease: 0.5
+  speedBreakDecrease: 15
+  maxBackwardsSpeed: 10
   steerPlayerIndex: 0
-  steeringSpeed: 0
-  steerAutoDecrease: 0
-  maxSteer: 0
+  steeringSpeed: 2
+  steerAutoDecrease: 3
+  maxSteer: 0.3
+--- !u!114 &114934125384017178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1783565318721744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb05db93a4702c247b457a16fa85bd25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114994186451337876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -258,6 +300,18 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.25
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135880612042502306
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1783565318721744}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.48
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136969928176892268
 CapsuleCollider:
