@@ -15,7 +15,6 @@ public class PlayerController : Singleton<PlayerController>
 
 	[Header ("Gears")]
 	public PlayerIndex gearPlayerIndex;
-	public Text transmissionPlayerFeedback;
 	public Gear[] gears;
 
 	[Range (0, 1)]
@@ -49,7 +48,6 @@ public class PlayerController : Singleton<PlayerController>
 	//public AnimationCurve speedUpCurve;
 	[Header ("Speeding")]
 	public PlayerIndex speedPlayerIndex;
-	public Text speedPlayerFeedback;
 	public float speedIncrease;
 	public float speedAutoDecrease;
 	public float speedBreakDecrease;
@@ -60,7 +58,6 @@ public class PlayerController : Singleton<PlayerController>
 
 	[Header ("Steering")]
 	public PlayerIndex steerPlayerIndex;
-	public Text steerPlayerFeedback;
 	public float steeringSpeed;
 	public float steerAutoDecrease;
 	public float maxSteer;
@@ -84,11 +81,9 @@ public class PlayerController : Singleton<PlayerController>
 	IEnumerator Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
-		updatePlayersPos ();
 		yield return null;
 		yield return null;
 		guys = FindObjectsOfType<PartyGuy> ();
-
 		setPlayersIndexes();
 	}
 		
@@ -125,16 +120,6 @@ public class PlayerController : Singleton<PlayerController>
 	public float getPlayerScore ()
 	{
 		return score / maxScore;
-	}
-
-	private void updatePlayersPos ()
-	{
-		print (speedPlayerIndex.ToString ());
-		if (speedPlayerFeedback != null) {
-			speedPlayerFeedback.text = speedPlayerIndex.ToString ();
-			steerPlayerFeedback.text = steerPlayerIndex.ToString ();
-			transmissionPlayerFeedback.text = gearPlayerIndex.ToString ();
-		}
 	}
 
 	public void updateGear (int gear)
@@ -221,14 +206,17 @@ public class PlayerController : Singleton<PlayerController>
 		speedPlayerIndex = PlayerIndex.One;
 		gearPlayerIndex = PlayerIndex.One;
 		steerPlayerIndex = PlayerIndex.One;
+		BottomBar.instance.updatePlayersControlsUI(1, 1, 1);
 
 		if (playerCount == 2) {
 			gearPlayerIndex = PlayerIndex.Two;
+			BottomBar.instance.updatePlayersControlsUI(1, 1, 2);
 		}
 
 		if (playerCount == 3) {
 			speedPlayerIndex = PlayerIndex.Two;
 			gearPlayerIndex = PlayerIndex.Three;
+			BottomBar.instance.updatePlayersControlsUI(2, 1, 3);
 		}
 	}
 
