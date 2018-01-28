@@ -11,6 +11,9 @@ public class PlayerController : Singleton<PlayerController>
 	/// <summary>
 	/// The speed increase when fully pushing the controller
 	/// </summary>
+	/// 
+
+	public AudioClip crashSound;
 
 	public static int playerCount = 1;
 
@@ -231,7 +234,9 @@ public class PlayerController : Singleton<PlayerController>
 		CopCar cop = collisionInfo.collider.GetComponent<CopCar> ();
 		//if (cop != null) 
 		{
-			health -= collisionInfo.relativeVelocity.magnitude;
+			float hitAmount = collisionInfo.relativeVelocity.magnitude;
+			health -= hitAmount;
+			GetComponent<AudioSource> ().PlayOneShot (crashSound, hitAmount / 10);
 			if (health <= 0) {
 				SceneManager.LoadScene ("GameOver");
 			}

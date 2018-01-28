@@ -80,8 +80,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7af0259b247b38342b776e08d86b9dd3, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -164,6 +164,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDelay: 3
   fadeDuration: 3
+  deathSounds:
+  - {fileID: 8300000, guid: f63564a5d6bd08647a89d5c89d490c6d, type: 3}
+  - {fileID: 8300000, guid: 8d25a4247b2beb943a659c01f1d99b64, type: 3}
+  - {fileID: 8300000, guid: 924c3f3e9225668419db0226ac4d0dc1, type: 3}
+  - {fileID: 8300000, guid: 855d6705fee97c742bd9cfeeb690b4c8, type: 3}
 --- !u!212 &212525306846974780
 SpriteRenderer:
   m_ObjectHideFlags: 1

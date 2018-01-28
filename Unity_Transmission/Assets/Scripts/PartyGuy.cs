@@ -121,7 +121,7 @@ public class PartyGuy : MonoBehaviour
 
 		CopCar cop = collisionInfo.collider.GetComponent<CopCar> ();
 
-		if (cop) {
+		if (cop && cop.agent) {
 			if (cop.agent.velocity.sqrMagnitude > hitVelocityToDie * hitVelocityToDie) {
 				Die ();
 			}

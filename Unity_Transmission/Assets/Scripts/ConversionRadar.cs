@@ -23,6 +23,16 @@ public class ConversionRadar : MonoBehaviour
 		if (guy != null && guy.currentState == PartyGuy.State.Trumping) {
 			guy.SetState (PartyGuy.State.BeingConverted);
 		}
+
+
+	}
+
+	void OnTriggerStay (Collider otherCollider)
+	{
+		CopCar car = otherCollider.GetComponent<CopCar> ();
+		if (car != null) {
+			GetComponentInParent<PlayerController> ().health -= .5f;
+		}
 	}
 
 	void OnTriggerExit (Collider otherCollider)
