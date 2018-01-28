@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -36,5 +37,12 @@ public class GameManager : Singleton<GameManager>
 		List<Room> roomsOrdered = new List<Room> (WorldGrid.instance.activeRooms.Where (r => r != null).OrderBy (r => (r.transform.position - PlayerController.instance.transform.position).sqrMagnitude));
 
 		Instantiate (copPrefab, roomsOrdered [9].transform.position, Quaternion.identity);
+	}
+
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			SceneManager.LoadScene ("MenuScene");
+		}
 	}
 }
