@@ -4,22 +4,23 @@ using UnityEngine;
 using XInputDotNetPure;
 using UnityEngine.UI;
 
-public class PlayerController : Singleton<PlayerController> {
+public class PlayerController : Singleton<PlayerController>
+{
 
-   	/// <summary>
-    /// The speed increase when fully pushing the controller
-    /// </summary>
+	/// <summary>
+	/// The speed increase when fully pushing the controller
+	/// </summary>
 
-	[Header("Gears")]
+	[Header ("Gears")]
 	public PlayerIndex gearPlayerIndex;
 	public Text transmissionPlayerFeedback;
 	public Gear[] gears;
 
-	[Range(0,1)]
+	[Range (0, 1)]
 	public float acceptedGearThreshold = 0.8f;
-	[Range(0,1)]
+	[Range (0, 1)]
 	public float freeGearThreshold = 0.4f;
-	[Range(0,1)]
+	[Range (0, 1)]
 	public float gearRestrictedRoamingProportion = 0.15f;
 
 	public float badGearRumbleMultiplier;
@@ -44,18 +45,18 @@ public class PlayerController : Singleton<PlayerController> {
 	public bool keyboardMode;
 
 	//public AnimationCurve speedUpCurve;
-	[Header("Speeding")]
+	[Header ("Speeding")]
 	public PlayerIndex speedPlayerIndex;
 	public Text speedPlayerFeedback;
-    public float speedIncrease;
-    public float speedAutoDecrease;
-    public float speedBreakDecrease;
-    public float maxBackwardsSpeed;
-   // public float maxSpeed;
+	public float speedIncrease;
+	public float speedAutoDecrease;
+	public float speedBreakDecrease;
+	public float maxBackwardsSpeed;
+	// public float maxSpeed;
 
-    internal float currentSpeed;
+	internal float currentSpeed;
 
-    [Header("Steering")]
+	[Header ("Steering")]
 	public PlayerIndex steerPlayerIndex;
 	public Text steerPlayerFeedback;
 	public float steeringSpeed;
@@ -65,36 +66,66 @@ public class PlayerController : Singleton<PlayerController> {
 	private float score;
 	private float maxScore = 100f;
 
-    internal float currentSteerRotation;
+	internal float currentSteerRotation;
 
-    //Components
-    Rigidbody rb;
+	//Components
+	Rigidbody rb;
 
 	ButtonState prevState;
 
-    float horizontalInput;
-    float verticalInput;
+	float horizontalInput;
+	float verticalInput;
 
-    // Use this for initialization
-    void Start () {
-        rb = GetComponent<Rigidbody>();
-		updatePlayersPos();
+	private PartyGuy[] guys;
+
+	// Use this for initialization
+	IEnumerator Start ()
+	{
+		rb = GetComponent<Rigidbody> ();
+		updatePlayersPos ();
+		yield return null;
+		yield return null;
+		guys = FindObjectsOfType<PartyGuy> ();
 	}
 
 
 	// Update is called once per frame
-	void Update () {
-        Speeding();
-        Steering();
-		 // FIXME should not be done every update when menu is setup
+	void Update ()
+	{
+		Speeding ();
+		Steering ();
+
+		UpdateScore ();
+		// FIXME should not be done every update when menu is setup
 	}
 
-	public float getPlayerScore() {
+	void UpdateScore ()
+	{
+		if (guys == null)
+			return;
+		
+		float converted = 0;
+		float total = 0;
+		foreach (PartyGuy guy in guys) {
+			if (guy == null)
+				continue;
+			if (guy.currentState == PartyGuy.State.Trancing) {
+				converted++;
+			}
+			total++;
+		}
+		score = converted;
+		maxScore = total;
+	}
+
+	public float getPlayerScore ()
+	{
 		return score / maxScore;
 	}
 
-	private void updatePlayersPos() {
-		print(speedPlayerIndex.ToString());
+	private void updatePlayersPos ()
+	{
+		print (speedPlayerIndex.ToString ());
 		if (speedPlayerFeedback != null) {
 			speedPlayerFeedback.text = speedPlayerIndex.ToString ();
 			steerPlayerFeedback.text = steerPlayerIndex.ToString ();
@@ -102,27 +133,30 @@ public class PlayerController : Singleton<PlayerController> {
 		}
 	}
 
-	public void updateGear(int gear) {
+	public void updateGear (int gear)
+	{
 		currentGearIndex = gear;
 	}
 
-	public float getSpeed(){
+	public float getSpeed ()
+	{
 		return currentSpeed;
 	}
 
-    void Speeding () {
+	void Speeding ()
+	{
 		if (keyboardMode) {
 			verticalInput = Input.GetAxis ("Vertical");
-		}else{
+		} else {
 			GamePadState state = GamePad.GetState (speedPlayerIndex);
 
 			verticalInput = state.Triggers.Right;
 		}
-	//	verticalInput = Mathf.Max (0, verticalInput);
+		//	verticalInput = Mathf.Max (0, verticalInput);
 
-		currentSpeed = transform.InverseTransformVector(rb.velocity).z;
+		currentSpeed = transform.InverseTransformVector (rb.velocity).z;
 
-		currentSpeed *= (1-speedAutoDecrease * Time.deltaTime);
+		currentSpeed *= (1 - speedAutoDecrease * Time.deltaTime);
 
 		if (!currentGear.isNeutral) {
 			//Only adding gas when not neutral
@@ -131,33 +165,34 @@ public class PlayerController : Singleton<PlayerController> {
 				currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
 			} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed) {
 				currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
-				GamePad.SetVibration(gearPlayerIndex, 0f, 0f);
+				GamePad.SetVibration (gearPlayerIndex, 0f, 0f);
 			} else {
 				// Rumble we reach the max or min speed, gear is not fit
 				setClutchRumble (currentSpeed, currentGear.minSpeed, currentGear.maxSpeed);
 			}
 		} else {
-			GamePad.SetVibration(gearPlayerIndex, 0f, 0f);
+			GamePad.SetVibration (gearPlayerIndex, 0f, 0f);
 		}
 		//currentSpeed = Mathf.Clamp(currentSpeed, -maxBackwardsSpeed, currentGear.maxSpeed);
 
 		//Actually applying to the RB
-		rb.velocity =  transform.TransformVector( new Vector3(0,0, currentSpeed));
-    }
+		rb.velocity = transform.TransformVector (new Vector3 (0, 0, currentSpeed));
+	}
 
-	void setClutchRumble(float speed, float minSpeed, float maxSpeed){
+	void setClutchRumble (float speed, float minSpeed, float maxSpeed)
+	{
 		float powerX = 0f;
-		float powerY= 0f;
+		float powerY = 0f;
 		if (speed < minSpeed) {
 			powerX = minSpeed - speed;
 		}
 		if (maxSpeed < speed) {
 			powerY = speed - maxSpeed;
 		}
-		GamePad.SetVibration(gearPlayerIndex, powerX, powerY);
+		GamePad.SetVibration (gearPlayerIndex, powerX, powerY);
 	}
 
-    void Steering()
+	void Steering ()
 	{	
 		if (keyboardMode) {
 			horizontalInput = Input.GetAxis ("Horizontal");
@@ -167,22 +202,23 @@ public class PlayerController : Singleton<PlayerController> {
 			horizontalInput = state.ThumbSticks.Left.X;
 		}
 		//if (Mathf.Abs (horizontalInput) < 0.1f) {
-		currentSteerRotation *= (1-steerAutoDecrease * Time.deltaTime);
+		currentSteerRotation *= (1 - steerAutoDecrease * Time.deltaTime);
 		//}
 
 		currentSteerRotation += horizontalInput * steeringSpeed * Time.deltaTime;
-        currentSteerRotation = Mathf.Clamp(currentSteerRotation, -maxSteer, maxSteer);
+		currentSteerRotation = Mathf.Clamp (currentSteerRotation, -maxSteer, maxSteer);
 
 
-        //Actually applying to the RB
-        rb.angularVelocity = new Vector3(0, currentSteerRotation * currentSpeed);
-    }
+		//Actually applying to the RB
+		rb.angularVelocity = new Vector3 (0, currentSteerRotation * currentSpeed);
+	}
 
 
 }
 
 [System.Serializable]
-public struct Gear  {
+public struct Gear
+{
 	public float minSpeed;
 	public float maxSpeed;
 	public float speedIncrease;
