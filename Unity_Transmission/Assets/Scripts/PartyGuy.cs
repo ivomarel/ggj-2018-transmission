@@ -7,7 +7,7 @@ using Pathfinding.Examples;
 
 public class PartyGuy : MonoBehaviour
 {
-	
+	public AudioClip[] tranceSounds;
 	public float conversionTime;
 	public float hitVelocityToDie;
 	public float speed;
@@ -89,11 +89,26 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnTrancing ()
 	{
+		float timer = 10f;
+		float t = 0;
 		anim.SetInteger ("Trans", Random.Range (1, 5));
 		while (true) {
+			t += Time.deltaTime;
+			if (t < timer) {
+				timer = Random.Range (5, 15);
+				t = 0;
+
+			}
 			WalkToDestination (PlayerController.instance.transform.position);
 			yield return new WaitForFixedUpdate ();
 		}
+	}
+
+	void PlayRandomSound ()
+	{
+		int r = Random.Range (0, tranceSounds.Length);
+		GetComponent<AudioSource> ().PlayOneShot (tranceSounds [r]);
+			
 	}
 	
 	// Update is called once per frame

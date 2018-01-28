@@ -197,6 +197,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41f123cafeafe64b826f025439bfb90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tranceSounds:
+  - {fileID: 8300000, guid: af9b1c54f18f3f845be273984587b2fa, type: 3}
+  - {fileID: 8300000, guid: 177a029f44b430346920fee842e42d01, type: 3}
+  - {fileID: 8300000, guid: d277f7815f8e8a14b928359c189e1e98, type: 3}
+  - {fileID: 8300000, guid: 4a15f3ff7d4d6804584e2a6f4b7b1e88, type: 3}
+  - {fileID: 8300000, guid: 403220ecd03ba924d80811b2819da156, type: 3}
+  - {fileID: 8300000, guid: c6839bb780fd72e469ff0c76e3479e78, type: 3}
   conversionTime: 1
   hitVelocityToDie: 5
   speed: 2
