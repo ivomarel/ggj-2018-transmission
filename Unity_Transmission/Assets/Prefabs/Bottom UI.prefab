@@ -564,9 +564,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knob: {fileID: 224911418472435126}
-  gearCount: 0
+  gearCount: 6
   gearBoxSize: {x: 50, y: 50, z: 0}
-  gearBoxPadding: 0
+  gearBoxPadding: -12
 --- !u!114 &114577513987426062
 MonoBehaviour:
   m_ObjectHideFlags: 1
