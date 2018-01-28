@@ -13,6 +13,9 @@ public class PlayerController : Singleton<PlayerController>
 	/// </summary>
 
 	public static int playerCount = 1;
+	public static bool victory = false;
+
+	public float victoryThreshold = 0.8f;
 
 	[Header ("Gears")]
 	public PlayerIndex gearPlayerIndex;
@@ -98,8 +101,9 @@ public class PlayerController : Singleton<PlayerController>
 		Speeding ();
 		Steering ();
 
-		UpdateScore ();
+		UpdateScore();
 		// FIXME should not be done every update when menu is setup
+		checkVictory();
 	}
 
 	void UpdateScore ()
@@ -235,6 +239,16 @@ public class PlayerController : Singleton<PlayerController>
 			if (health <= 0) {
 				SceneManager.LoadScene ("GameOver");
 			}
+		}
+	}
+
+	void checkVictory() {
+		Debug.Log (score / maxScore);
+		Debug.Log (victoryThreshold);
+		if (score/maxScore > victoryThreshold) {
+			Debug.Log ("success");
+			victory = true;
+			SceneManager.LoadScene("GameOver");
 		}
 	}
 }
