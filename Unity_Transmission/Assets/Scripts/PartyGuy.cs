@@ -55,6 +55,7 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnTrumping ()
 	{
+		sr.color = Color.white;
 		Vector3 currentDest = Vector3.zero;
 		float walkTime = 3;
 		float walkTimer = Mathf.Infinity;
