@@ -86,15 +86,23 @@ public class PlayerController : Singleton<PlayerController>
 
 	private PartyGuy[] guys;
 
+	public AudioClip[] carPeopleSounds;
+
 	// Use this for initialization
 	IEnumerator Start ()
 	{
 		maxHealth = health;
 		rb = GetComponent<Rigidbody> ();
+		InvokeRepeating ("RandomCar", 10, 10);
 		yield return null;
 		yield return null;
 		guys = FindObjectsOfType<PartyGuy> ();
 		setPlayersIndexes ();
+	}
+
+	void RandomCar ()
+	{
+		GetComponent<AudioSource> ().PlayOneShot (carPeopleSounds [Random.Range (0, carPeopleSounds.Length)]);
 	}
 		
 

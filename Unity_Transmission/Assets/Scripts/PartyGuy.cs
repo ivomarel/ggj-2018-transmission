@@ -97,7 +97,7 @@ public class PartyGuy : MonoBehaviour
 			if (t < timer) {
 				timer = Random.Range (5, 15);
 				t = 0;
-
+				PlayRandomSound ();
 			}
 			WalkToDestination (PlayerController.instance.transform.position);
 			yield return new WaitForFixedUpdate ();
