@@ -70,8 +70,7 @@ GameObject:
   - component: {fileID: 54083993171844406}
   - component: {fileID: 136969928176892268}
   - component: {fileID: 114789406273407210}
-  - component: {fileID: 81666940336113936}
-  - component: {fileID: 82543545852792508}
+  - component: {fileID: 82340469779788808}
   m_Layer: 8
   m_Name: Car
   m_TagString: Untagged
@@ -241,14 +240,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!81 &81666940336113936
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1446531679354238}
-  m_Enabled: 1
---- !u!82 &82543545852792508
+--- !u!82 &82340469779788808
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -343,10 +335,10 @@ MonoBehaviour:
   victoryThreshold: 0.8
   gearPlayerIndex: 0
   gears:
-  - minSpeed: -100
+  - minSpeed: -2
     maxSpeed: 0
-    speedIncrease: 10
-  - minSpeed: -100
+    speedIncrease: 1
+  - minSpeed: -5
     maxSpeed: 1
     speedIncrease: 10
   - minSpeed: 0.5

@@ -171,6 +171,8 @@ public class PlayerController : Singleton<PlayerController>
 			//0 is reverse
 			if (currentGearIndex == 0) {
 				currentSpeed -= speedIncrease * verticalInput * Time.deltaTime;
+				if (currentSpeed <= -2)
+					currentSpeed = -2;
 			} else if (currentSpeed >= currentGear.minSpeed && currentSpeed <= currentGear.maxSpeed) {
 				currentSpeed += speedIncrease * verticalInput * Time.deltaTime;
 				GamePad.SetVibration (gearPlayerIndex, 0f, 0f);
