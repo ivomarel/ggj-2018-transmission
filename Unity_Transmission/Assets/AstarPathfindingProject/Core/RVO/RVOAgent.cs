@@ -115,8 +115,8 @@ namespace Pathfinding.RVO.Sampled {
 		public void ForceSetVelocity (Vector2 velocity) {
 			// A bit hacky, but it is approximately correct
 			// assuming the agent does not move significantly
-			nextTargetPoint = CalculatedTargetPoint = position + velocity * 1000;
-			nextDesiredSpeed = CalculatedSpeed = velocity.magnitude;
+			CalculatedTargetPoint = position + velocity * 1000;
+			CalculatedSpeed = velocity.magnitude;
 			manuallyControlled = true;
 		}
 
@@ -184,42 +184,34 @@ namespace Pathfinding.RVO.Sampled {
 			agentTimeHorizon = AgentTimeHorizon;
 			obstacleTimeHorizon = ObstacleTimeHorizon;
 			maxNeighbours = MaxNeighbours;
-			// Manually controlled overrides the agent being locked
-			// (if one for some reason uses them at the same time)
-			locked = Locked && !manuallyControlled;
+			locked = Locked;
 			position = Position;
 			elevationCoordinate = ElevationCoordinate;
 			collidesWith = CollidesWith;
 			layer = Layer;
 
-			if (locked) {
-				// Locked agents do not move at all
-				desiredTargetPointInVelocitySpace = position;
-				desiredVelocity = currentVelocity = Vector2.zero;
-			} else {
-				desiredTargetPointInVelocitySpace = nextTargetPoint - position;
+			desiredTargetPointInVelocitySpace = nextTargetPoint - position;
 
-				// Estimate our current velocity
-				// This is necessary because other agents need to know
-				// how this agent is moving to be able to avoid it
-				currentVelocity = (CalculatedTargetPoint - position).normalized * CalculatedSpeed;
+			// Estimate our current velocity
+			// This is necessary because other agents need to know
+			// how this agent is moving to be able to avoid it
+			currentVelocity = (CalculatedTargetPoint - position).normalized * CalculatedSpeed;
 
-				// Calculate the desired velocity from the point we want to reach
-				desiredVelocity = desiredTargetPointInVelocitySpace.normalized*desiredSpeed;
+			// Calculate the desired velocity from the point we want to reach
+			desiredVelocity = desiredTargetPointInVelocitySpace.normalized*desiredSpeed;
 
-				if (collisionNormal != Vector2.zero) {
-					collisionNormal.Normalize();
-					var dot = Vector2.Dot(currentVelocity, collisionNormal);
+			if (collisionNormal != Vector2.zero) {
+				collisionNormal.Normalize();
+				var dot = Vector2.Dot(currentVelocity, collisionNormal);
 
-					// Check if the velocity is going into the wall
-					if (dot < 0) {
-						// If so: remove that component from the velocity
-						currentVelocity -= collisionNormal * dot;
-					}
-
-					// Clear the normal
-					collisionNormal = Vector2.zero;
+				// Check if the velocity is going into the wall
+				if (dot < 0) {
+					// If so: remove that component from the velocity
+					currentVelocity -= collisionNormal * dot;
 				}
+
+				// Clear the normal
+				collisionNormal = Vector2.zero;
 			}
 		}
 
@@ -312,7 +304,7 @@ namespace Pathfinding.RVO.Sampled {
 		 */
 		Vector2 To2D (Vector3 p, out float elevation) {
 			if (simulator.movementPlane == MovementPlane.XY) {
-				elevation = -p.z;
+				elevation = p.z;
 				return new Vector2(p.x, p.y);
 			} else {
 				elevation = p.y;
@@ -745,9 +737,8 @@ namespace Pathfinding.RVO.Sampled {
 						var sqrDistToSegment = (Vector2.Lerp(p1, p2, factorAlongSegment) - position).sqrMagnitude;
 
 						// Ignore the segment if it is too far away
-						// or the agent is too high up (or too far down) on the elevation axis (usually y axis) to avoid it.
-						// If the XY plane is used then all elevation checks are disabled
-						if (sqrDistToSegment < range*range && (simulator.movementPlane == MovementPlane.XY || (elevationCoordinate <= segmentY + vertex.height && elevationCoordinate+height >= segmentY))) {
+						// or the agent is too high up (or too far down) on the elevation axis (usually y axis) to avoid it
+						if (sqrDistToSegment < range*range && elevationCoordinate <= segmentY + vertex.height && elevationCoordinate+height >= segmentY) {
 							vos.Add(VO.SegmentObstacle(p2 - position, p1 - position, Vector2.zero, radius * 0.01f, 1f / ObstacleTimeHorizon, 1f / simulator.DeltaTime));
 						}
 					}
