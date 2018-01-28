@@ -229,7 +229,8 @@ public class PlayerController : Singleton<PlayerController>
 	void OnCollisionEnter (Collision collisionInfo)
 	{
 		CopCar cop = collisionInfo.collider.GetComponent<CopCar> ();
-		if (cop != null) {
+		//if (cop != null) 
+		{
 			health -= collisionInfo.relativeVelocity.magnitude;
 			if (health <= 0) {
 				SceneManager.LoadScene ("GameOver");
