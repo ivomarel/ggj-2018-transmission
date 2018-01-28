@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conversionTime: 1
   hitVelocityToDie: 5
-  speed: 1
+  speed: 2
   rotationSpeed: 10
   stoppingDistance: 1
   bloodPrefab: {fileID: 114346582437641662, guid: a623b4cc28cda234189801dcfc1ff3d4,
