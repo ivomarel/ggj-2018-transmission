@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6209d0a4ad0df734bb26a65b2837265d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  victoryThreshold: 0.8
   gearPlayerIndex: 0
   gears:
   - minSpeed: -100
