@@ -68,8 +68,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4879473258235264}
   - component: {fileID: 54083993171844406}
+  - component: {fileID: 114746358602407312}
   - component: {fileID: 136969928176892268}
-  - component: {fileID: 114789406273407210}
   m_Layer: 8
   m_Name: Car
   m_TagString: Untagged
@@ -208,7 +208,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &114789406273407210
+--- !u!114 &114746358602407312
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -216,26 +216,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 1446531679354238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6209d0a4ad0df734bb26a65b2837265d, type: 3}
+  m_Script: {fileID: 11500000, guid: c08bdefca38414d90aaa275c9a83fe43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gearPlayerIndex: 0
-  gears: []
+  transmissionPlayerFeedback: {fileID: 0}
+  gears:
+  - minSpeed: -100
+    maxSpeed: 0
+    speedIncrease: 10
+  - minSpeed: -100
+    maxSpeed: 10
+    speedIncrease: 10
+  - minSpeed: 2
+    maxSpeed: 7
+    speedIncrease: 10
+  - minSpeed: 5
+    maxSpeed: 9
+    speedIncrease: 10
+  - minSpeed: 7
+    maxSpeed: 11
+    speedIncrease: 10
+  - minSpeed: 9
+    maxSpeed: 13
+    speedIncrease: 10
   acceptedGearThreshold: 0.8
   freeGearThreshold: 0.4
   gearRestrictedRoamingProportion: 0.15
-  badGearRumbleMultiplier: 0
-  health: 0
-  keyboardMode: 0
+  badGearRumbleMultiplier: 20
+  keyboardMode: 1
   speedPlayerIndex: 0
-  speedIncrease: 0
-  speedAutoDecrease: 0
-  speedBreakDecrease: 0
-  maxBackwardsSpeed: 0
+  speedPlayerFeedback: {fileID: 0}
+  speedIncrease: 10
+  speedAutoDecrease: 0.5
+  speedBreakDecrease: 15
+  maxBackwardsSpeed: 10
   steerPlayerIndex: 0
-  steeringSpeed: 0
-  steerAutoDecrease: 0
-  maxSteer: 0
+  steerPlayerFeedback: {fileID: 0}
+  steeringSpeed: 2
+  steerAutoDecrease: 3
+  maxSteer: 0.3
 --- !u!114 &114994186451337876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,7 +277,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.25
+  m_Radius: 3.94
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136969928176892268
 CapsuleCollider:
