@@ -62,6 +62,9 @@ public class PlayerController : Singleton<PlayerController> {
 	public float steerAutoDecrease;
 	public float maxSteer;
 
+	private float score;
+	private float maxScore = 100f;
+
     internal float currentSteerRotation;
 
     //Components
@@ -84,6 +87,10 @@ public class PlayerController : Singleton<PlayerController> {
         Speeding();
         Steering();
 		 // FIXME should not be done every update when menu is setup
+	}
+
+	public float getPlayerScore() {
+		return score / maxScore;
 	}
 
 	private void updatePlayersPos() {
