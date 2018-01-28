@@ -50,7 +50,7 @@ public class Room : MonoBehaviour
 	{
 		//possibleExits = GetComponentsInChildren<SphereCollider> ();
 		yield return null;
-		if (minUnits == 2) {
+		if (minUnits >= 2) {
 			SpawnUnits ();
 		}
 	}
