@@ -28,11 +28,13 @@ public class PartyGuy : MonoBehaviour
 
 	private Rigidbody rb;
 	private SpriteRenderer sr;
+	private Animator anim;
 	// Use this for initialization
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();	
 		sr = GetComponentInChildren<SpriteRenderer> ();
+		anim = GetComponentInChildren<Animator> ();
 		SetState (State.Trumping);
 	}
 
@@ -55,6 +57,7 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnTrumping ()
 	{
+		anim.SetBool ("IsConverting", false);
 		Vector3 currentDest = Vector3.zero;
 		float walkTime = 3;
 		float walkTimer = Mathf.Infinity;
@@ -73,10 +76,11 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnConverting ()
 	{
+		anim.SetBool ("IsConverting", true);
 		float timer = 0;
 		while (timer < conversionTime) {
 			timer += Time.fixedDeltaTime;
-			sr.color = Color.Lerp (Color.white, Color.red, timer / conversionTime);
+			//	sr.color = Color.Lerp (Color.white, Color.red, timer / conversionTime);
 			yield return new WaitForFixedUpdate ();
 		}
 
@@ -85,6 +89,7 @@ public class PartyGuy : MonoBehaviour
 
 	IEnumerator OnTrancing ()
 	{
+		anim.SetInteger ("Trans", Random.Range (1, 5));
 		while (true) {
 			WalkToDestination (PlayerController.instance.transform.position);
 			yield return new WaitForFixedUpdate ();

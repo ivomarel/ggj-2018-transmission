@@ -156,7 +156,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -178,7 +178,7 @@ Animator:
   m_GameObject: {fileID: 1453263816821702}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 62fa3a9a234ce054b915fad84d80376f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2cf835c66bdf97a41ac81c079850c140, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

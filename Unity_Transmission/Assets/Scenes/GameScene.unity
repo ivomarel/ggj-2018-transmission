@@ -1043,7 +1043,7 @@ MonoBehaviour:
     type: 2}
   copPrefab: {fileID: 114606273833363414, guid: 1aa91ae516211c34889beaeae58c30d7,
     type: 2}
-  copcarSpawnInterval: 3
+  copcarSpawnInterval: 30
 --- !u!1001 &1958902591
 Prefab:
   m_ObjectHideFlags: 0
