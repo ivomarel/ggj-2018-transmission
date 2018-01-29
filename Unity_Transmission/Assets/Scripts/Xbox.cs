@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if !PLATFORM_STANDALONE_OSX
 using XInputDotNetPure;
+#endif
+public class Xbox : MonoBehaviour
+{
 
-public class Xbox : MonoBehaviour {
+#if !PLATFORM_STANDALONE_OSX
 
 	static GamePadState[] prevStates = new GamePadState[4];
 
@@ -29,4 +33,6 @@ public class Xbox : MonoBehaviour {
 			prevStates[i] = GamePad.GetState (testPlayerIndex);
 		}
 	}
+    
+#endif
 }

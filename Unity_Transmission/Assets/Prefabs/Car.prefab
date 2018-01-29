@@ -333,7 +333,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crashSound: {fileID: 0}
   victoryThreshold: 0.8
-  gearPlayerIndex: 0
   gears:
   - minSpeed: -2
     maxSpeed: 0
@@ -358,16 +357,13 @@ MonoBehaviour:
   gearRestrictedRoamingProportion: 0.15
   badGearRumbleMultiplier: 20
   health: 500
-  keyboardMode: 0
-  speedPlayerIndex: 0
   speedIncrease: 10
   speedAutoDecrease: 0.5
   speedBreakDecrease: 15
   maxBackwardsSpeed: 10
-  steerPlayerIndex: 0
   steeringSpeed: 2
   steerAutoDecrease: 3
-  maxSteer: 0.5
+  maxSteer: 0.8
   carPeopleSounds:
   - {fileID: 8300000, guid: 05074d42eeee1644d85aa03bbdd39b8e, type: 3}
   - {fileID: 8300000, guid: 9d0e0ca927b2cd94b99a2a95520a83d0, type: 3}

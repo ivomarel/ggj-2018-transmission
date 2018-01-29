@@ -162,6 +162,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &244476400 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1227775244854334, guid: 5b70b82533f83234f92733d4d394bd14,
+    type: 2}
+  m_PrefabInternal: {fileID: 1383381888}
+--- !u!114 &244476401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 244476400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d8aaebb2e204531997e8fca7748bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledInKeyboard: 0
 --- !u!1 &330161781
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +502,23 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 521182246}
+--- !u!1 &678726233 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1260285710054864, guid: 5b70b82533f83234f92733d4d394bd14,
+    type: 2}
+  m_PrefabInternal: {fileID: 1383381888}
+--- !u!114 &678726234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 678726233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d8aaebb2e204531997e8fca7748bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledInKeyboard: 0
 --- !u!1 &692173436
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,6 +1027,23 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224968870811841712, guid: 5b70b82533f83234f92733d4d394bd14,
     type: 2}
   m_PrefabInternal: {fileID: 1383381888}
+--- !u!1 &1502203326 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1316363371777328, guid: 5b70b82533f83234f92733d4d394bd14,
+    type: 2}
+  m_PrefabInternal: {fileID: 1383381888}
+--- !u!114 &1502203327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502203326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d8aaebb2e204531997e8fca7748bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledInKeyboard: 0
 --- !u!1 &1860762197
 GameObject:
   m_ObjectHideFlags: 0

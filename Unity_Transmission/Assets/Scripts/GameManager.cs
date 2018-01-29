@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    public static bool keyboardMode = true;
+    public static bool easyMode = true;
+
 	public PlayerController player;
 	public PartyGuy guyPrefab;
 	public CopCar copPrefab;
