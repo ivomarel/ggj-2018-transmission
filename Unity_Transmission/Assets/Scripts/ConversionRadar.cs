@@ -30,7 +30,7 @@ public class ConversionRadar : MonoBehaviour
 	void OnTriggerStay (Collider otherCollider)
 	{
 		CopCar car = otherCollider.GetComponent<CopCar> ();
-        if (car != null && player.currentSpeed < 2) {
+        if (car != null && Mathf.Abs(player.currentSpeed) < 2) {
 			player.health -= .5f;
 		}
 	}

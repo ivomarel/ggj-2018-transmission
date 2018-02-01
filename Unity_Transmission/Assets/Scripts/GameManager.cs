@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager>
 	public PartyGuy guyPrefab;
 	public CopCar copPrefab;
 
-	public float copcarSpawnInterval;
+	public static float copcarSpawnInterval;
 
 	// Use this for initialization
 	protected override void Awake ()
@@ -37,9 +37,16 @@ public class GameManager : Singleton<GameManager>
 	// Update is called once per frame
 	public void SpawnCopCar ()
 	{
-		List<Room> roomsOrdered = new List<Room> (WorldGrid.instance.activeRooms.Where (r => r != null).OrderBy (r => (r.transform.position - PlayerController.instance.transform.position).sqrMagnitude));
+        List<Room> roomsOrdered = new List<Room> (WorldGrid.instance.activeRooms
+                                                    .Where (r => r != null)
+                                                    .Where(r => !r.isDeadEnd)
+                                                    .OrderBy (r => (r.transform.position - PlayerController.instance.transform.position).sqrMagnitude));
 
-		Instantiate (copPrefab, roomsOrdered [9].transform.position, Quaternion.identity);
+        int index = 9;
+        if (index >= roomsOrdered.Count) {
+            index = roomsOrdered.Count - 1; 
+        }
+		Instantiate (copPrefab, roomsOrdered [index].transform.position, Quaternion.identity);
 	}
 
 	void Update ()

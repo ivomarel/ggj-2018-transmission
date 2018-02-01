@@ -8,7 +8,7 @@ public class WorldGrid : Singleton<WorldGrid>
 {
 
 	public float buildDelay;
-	public int nRooms;
+	public static int nRooms;
 	public float realRoomSize;
 
 	public const int ROOM_SIZE = 3;
@@ -26,6 +26,12 @@ public class WorldGrid : Singleton<WorldGrid>
 	public int[,] dungeon;
 
 	Queue<GridPos> roomPosQueue;
+
+    int dungeonSize {
+        get {
+            return nRooms * ROOM_SIZE * 2;
+        }
+    }
 
 	public void CreateDungeon ()
 	{
@@ -51,21 +57,23 @@ public class WorldGrid : Singleton<WorldGrid>
 	IEnumerator CreateDungeonCor ()
 	{
 
-		dungeon = new int[nRooms * ROOM_SIZE, nRooms * ROOM_SIZE];
-		for (int i = 0; i < nRooms * ROOM_SIZE; i++) {
-			for (int j = 0; j < nRooms * ROOM_SIZE; j++) {
+		dungeon = new int[dungeonSize, dungeonSize];
+		for (int i = 0; i < dungeonSize; i++) {
+			for (int j = 0; j < dungeonSize; j++) {
 				dungeon [i, j] = -1;
 			}
 		}
 
 		roomPosQueue = new Queue<GridPos> ();
 
-		int startX = nRooms / 2;
-		int startY = nRooms / 2;
+        int startX = dungeonSize/2 /ROOM_SIZE;
+		int startY = dungeonSize/2/ ROOM_SIZE;
 
 		roomPosQueue.Enqueue (new GridPos (startX * ROOM_SIZE, startY * ROOM_SIZE));
 
 		int nRoomsPlaced = 0;
+
+        bool firstTime = true;
 
 		//We add new room positions to queue
 		while (roomPosQueue.Count != 0) {
@@ -74,6 +82,12 @@ public class WorldGrid : Singleton<WorldGrid>
 			//We don't use the last room here, because the last room is supposed to be a dead end.
 			//If we place the dead ends too fast, the world often generates too small
 			int randomIndex = Random.Range (0, roomPrefabs.Length - 1);
+
+            //Always start with a square
+            if (firstTime) {
+                randomIndex = 0;
+                firstTime = false;
+            }
 			PlaceRoom (randomIndex, pos.x, pos.y);
 			if (buildDelay > 0) {
 				yield return new WaitForSeconds (buildDelay);
@@ -83,9 +97,9 @@ public class WorldGrid : Singleton<WorldGrid>
 			}
 		}
 
-        for (int i = 0; i < nRooms * ROOM_SIZE; i += ROOM_SIZE)
+        for (int i = 0; i < dungeonSize; i += ROOM_SIZE)
         {
-            for (int j = 0; j < nRooms * ROOM_SIZE; j += ROOM_SIZE)
+            for (int j = 0; j < dungeonSize; j += ROOM_SIZE)
             {
                 if (dungeon[i,j] == 2) {
                     PlaceRoom(4, i, j, false);

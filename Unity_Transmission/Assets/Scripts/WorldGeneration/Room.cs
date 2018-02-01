@@ -11,7 +11,14 @@ public class Room : MonoBehaviour
 	public bool north;
 	public bool east;
 	public bool south;
-	public bool west;
+    public bool west;
+
+    //HACKY!
+    internal bool isDeadEnd {
+        get {
+          return (north && !east && !south && !west);  
+        } 
+    }
 
 	public int[,] grid {
 		get {
