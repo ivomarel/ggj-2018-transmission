@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ConversionRadar : MonoBehaviour
 {
-
+    PlayerController player;
 	// Use this for initialization
 	void Start ()
 	{
-		
+        player = GetComponentInParent<PlayerController>();	
 	}
 	
 	// Update is called once per frame
@@ -30,8 +30,8 @@ public class ConversionRadar : MonoBehaviour
 	void OnTriggerStay (Collider otherCollider)
 	{
 		CopCar car = otherCollider.GetComponent<CopCar> ();
-		if (car != null) {
-			GetComponentInParent<PlayerController> ().health -= .5f;
+        if (car != null && player.currentSpeed < 2) {
+			player.health -= .5f;
 		}
 	}
 

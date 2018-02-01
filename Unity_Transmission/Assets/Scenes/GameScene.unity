@@ -143,12 +143,16 @@ MonoBehaviour:
   buildDelay: 0
   nRooms: 50
   realRoomSize: 3.3
-  rooms:
-  - {fileID: 114907988080000286, guid: 75ae10cce25f35b4a9e4b9df17fa48ad, type: 2}
-  - {fileID: 114907988080000286, guid: 1a268b084b19aed4482f4b40e3e23412, type: 2}
-  - {fileID: 114907988080000286, guid: 4f04d42a3e2a034459a3729ea83b9272, type: 2}
-  - {fileID: 114907988080000286, guid: 20097890980346a4d9f2dbee9d166b1a, type: 2}
-  - {fileID: 114907988080000286, guid: 7ad87cc7ec54128409cc06c7fd6003b6, type: 2}
+  fourWayRoomPrefab: {fileID: 114907988080000286, guid: 20097890980346a4d9f2dbee9d166b1a,
+    type: 2}
+  threeWayRoomPrefab: {fileID: 114907988080000286, guid: 75ae10cce25f35b4a9e4b9df17fa48ad,
+    type: 2}
+  cornerRoomPrefab: {fileID: 114907988080000286, guid: 1a268b084b19aed4482f4b40e3e23412,
+    type: 2}
+  straightRoomPrefab: {fileID: 114907988080000286, guid: 4f04d42a3e2a034459a3729ea83b9272,
+    type: 2}
+  deadEndRoomPrefab: {fileID: 114907988080000286, guid: 7ad87cc7ec54128409cc06c7fd6003b6,
+    type: 2}
 --- !u!4 &153734756
 Transform:
   m_ObjectHideFlags: 0
@@ -434,6 +438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0095122a7eef642b68f4724ad732795b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minHeight: 7
+  maxHeight: 15
 --- !u!1 &521182246
 GameObject:
   m_ObjectHideFlags: 0

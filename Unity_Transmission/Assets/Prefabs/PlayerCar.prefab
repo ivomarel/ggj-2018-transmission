@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 114789406273407210}
   - component: {fileID: 82340469779788808}
   m_Layer: 8
-  m_Name: Car
+  m_Name: PlayerCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   freeGearThreshold: 0.4
   gearRestrictedRoamingProportion: 0.15
   badGearRumbleMultiplier: 20
-  health: 500
+  health: 1000
   speedIncrease: 10
   speedAutoDecrease: 0.5
   speedBreakDecrease: 15

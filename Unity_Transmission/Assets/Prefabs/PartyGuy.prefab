@@ -204,7 +204,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4a15f3ff7d4d6804584e2a6f4b7b1e88, type: 3}
   - {fileID: 8300000, guid: 403220ecd03ba924d80811b2819da156, type: 3}
   - {fileID: 8300000, guid: c6839bb780fd72e469ff0c76e3479e78, type: 3}
-  conversionTime: 1
+  conversionTime: 0.6
   hitVelocityToDie: 5
   speed: 2
   rotationSpeed: 10

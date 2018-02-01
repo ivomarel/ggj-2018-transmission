@@ -13,7 +13,13 @@ public class WorldGrid : Singleton<WorldGrid>
 
 	public const int ROOM_SIZE = 3;
 
-	public Room[] rooms;
+    public Room fourWayRoomPrefab;
+    public Room threeWayRoomPrefab;
+    public Room cornerRoomPrefab;
+    public Room straightRoomPrefab;
+    public Room deadEndRoomPrefab;
+
+	internal Room[] roomPrefabs;
 
 	internal Room[] activeRooms;
 
@@ -23,7 +29,14 @@ public class WorldGrid : Singleton<WorldGrid>
 
 	public void CreateDungeon ()
 	{
-		foreach (Room r in rooms) {
+        roomPrefabs = new Room[5];
+        roomPrefabs[0] = fourWayRoomPrefab;
+        roomPrefabs[1] = threeWayRoomPrefab;
+        roomPrefabs[2] = cornerRoomPrefab;
+        roomPrefabs[3] = straightRoomPrefab;
+        roomPrefabs[4] = deadEndRoomPrefab;
+
+		foreach (Room r in roomPrefabs) {
 			r.gameObject.SetActive (false);
 		}
 
@@ -60,19 +73,28 @@ public class WorldGrid : Singleton<WorldGrid>
 			GridPos pos = roomPosQueue.Dequeue ();
 			//We don't use the last room here, because the last room is supposed to be a dead end.
 			//If we place the dead ends too fast, the world often generates too small
-			int randomIndex = Random.Range (0, rooms.Length - 1);
+			int randomIndex = Random.Range (0, roomPrefabs.Length - 1);
 			PlaceRoom (randomIndex, pos.x, pos.y);
 			if (buildDelay > 0) {
 				yield return new WaitForSeconds (buildDelay);
 			}
 			if (nRoomsPlaced >= nRooms) {
-				yield break;
+				break;
 			}
 		}
-			
+
+        for (int i = 0; i < nRooms * ROOM_SIZE; i += ROOM_SIZE)
+        {
+            for (int j = 0; j < nRooms * ROOM_SIZE; j += ROOM_SIZE)
+            {
+                if (dungeon[i,j] == 2) {
+                    PlaceRoom(4, i, j, false);
+                }
+            }
+        }   
 
 			
-		//	PrintDungeon ();
+		//PrintDungeon ();
 
 		//	PrintQueue ();
 	}
@@ -84,10 +106,10 @@ public class WorldGrid : Singleton<WorldGrid>
 		}
 	}
 
-	void PlaceRoom (int roomIndex, int x, int y)
+	void PlaceRoom (int roomIndex, int x, int y, bool checkSides = true)
 	{
 		//We instantiate a roomClone. This might be destroyed later (not efficient but keeping it for now)
-		Room roomClone = Instantiate (rooms [roomIndex], transform);
+		Room roomClone = Instantiate (roomPrefabs [roomIndex], transform);
 
 		//For safety, we break out of the array when all rooms (with all rotations) were checked. This should never happen though!
 		int breakPoint = 0;
@@ -100,18 +122,29 @@ public class WorldGrid : Singleton<WorldGrid>
 			if (rotations >= 4) {
 				//If the room doesn't fit after 4 rotations, we pick the next room
 				rotations = 0;
-				roomIndex++;
-				if (roomIndex >= rooms.Length) {
+                if (checkSides)
+                {
+					roomIndex++;
+				}
+                else {
+                    roomIndex--;
+                }
+
+                if (roomIndex < 0) {
+                    roomIndex = roomPrefabs.Length - 1;
+                }
+
+				if (roomIndex >= roomPrefabs.Length) {
 					roomIndex = 0;
 				}
 				//We destroy the old room, since it didn't fit
 				Destroy (roomClone.gameObject);
-				if (breakPoint > rooms.Length) {
+				if (breakPoint > roomPrefabs.Length) {
 					roomIndex = 4;
 					//Debug.LogError ("Unity would have crashed...");
 					//return;
 				}
-				roomClone = Instantiate (rooms [roomIndex], transform);
+				roomClone = Instantiate (roomPrefabs [roomIndex], transform);
 
 				breakPoint++;
 			}
@@ -127,18 +160,20 @@ public class WorldGrid : Singleton<WorldGrid>
 		//We place the room at the correct position
 		roomClone.transform.position = new Vector3 ((x - nRooms * .5f) * realRoomSize, 0, (y - nRooms * .5f) * realRoomSize);
 
-		//We need to check the grid if our room has doors to empty spaces. If so, we need to place extra rooms there.
+    //We need to check the grid if our room has doors to empty spaces. If so, we need to place extra rooms there.
 
-		//TopDoor
-		CheckAddRoom (x, y + 1, x - 1, y + 1, x - 3, y);
-		//LeftDoor
-		CheckAddRoom (x + 1, y, x + 1, y - 1, x, y - 3);
-		//BottomDoor
-		CheckAddRoom (x + 2, y + 1, x + 3, y + 1, x + 3, y);
-		//RightDoor
-		CheckAddRoom (x + 1, y + 2, x + 1, y + 3, x, y + 3);
+    if (checkSides)
+    {
+        //TopDoor
+        CheckAddRoom(x, y + 1, x - 1, y + 1, x - 3, y);
+        //LeftDoor
+        CheckAddRoom(x + 1, y, x + 1, y - 1, x, y - 3);
+        //BottomDoor
+        CheckAddRoom(x + 2, y + 1, x + 3, y + 1, x + 3, y);
+        //RightDoor
+        CheckAddRoom(x + 1, y + 2, x + 1, y + 3, x, y + 3);
 
-			
+    }
 	}
 
 	void CheckAddRoom (int roomDoorPosX, int roomDoorPosY, int roomConnectPosX, int roomConnectPosY, int newPosX, int newPosY)

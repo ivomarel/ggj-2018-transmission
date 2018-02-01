@@ -63,6 +63,12 @@ public class PlayerController : Singleton<PlayerController>
         } 
     }
 
+    internal float maxSpeed {
+        get {
+            return gears[gears.Length - 1].maxSpeed;
+        }
+    }
+
     //public AnimationCurve speedUpCurve;
     [Header("Speeding")]
 #if !PLATFORM_STANDALONE_OSX
