@@ -86,7 +86,7 @@ public class PlayerController : Singleton<PlayerController>
 		guys = FindObjectsOfType<PartyGuy> ();
 		setPlayersIndexes();
 	}
-		
+
 
 	// Update is called once per frame
 	void Update ()
@@ -102,7 +102,7 @@ public class PlayerController : Singleton<PlayerController>
 	{
 		if (guys == null)
 			return;
-		
+
 		float converted = 0;
 		float total = 0;
 		foreach (PartyGuy guy in guys) {
@@ -182,7 +182,7 @@ public class PlayerController : Singleton<PlayerController>
 	}
 
 	void Steering ()
-	{	
+	{
 		if (keyboardMode) {
 			horizontalInput = Input.GetAxis ("Horizontal");
 		} else {
